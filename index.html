@@ -1,145 +1,448 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Eleições UMES Brejões 2026</title>
+<title>Portal Eleitoral | UMES Brejões 2026</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
+
+:root{
+--azul:#0D47A1;
+--azul-claro:#1565C0;
+--fundo:#F4F7FC;
+--texto:#2D3748;
+--branco:#FFFFFF;
+--cinza:#718096;
+}
 
 *{
 margin:0;
 padding:0;
 box-sizing:border-box;
+scroll-behavior:smooth;
 }
 
 body{
-font-family:Arial, sans-serif;
-background:#f4f7fb;
-color:#333;
+font-family:'Inter',sans-serif;
+background:var(--fundo);
+color:var(--texto);
 }
 
 header{
-background:#003366;
+background:linear-gradient(135deg,#0D47A1,#1976D2);
 color:white;
-padding:40px 20px;
+padding:70px 20px;
 text-align:center;
 }
 
 header h1{
-font-size:2rem;
-margin-bottom:10px;
+font-size:3rem;
+margin-bottom:15px;
 }
 
 header p{
-font-size:1rem;
+font-size:1.2rem;
+opacity:.95;
 }
 
 nav{
-background:#0055aa;
-padding:15px;
-text-align:center;
+background:white;
+box-shadow:0 2px 10px rgba(0,0,0,.08);
+position:sticky;
+top:0;
+z-index:100;
+}
+
+nav ul{
+display:flex;
+justify-content:center;
+flex-wrap:wrap;
+list-style:none;
+}
+
+nav li{
+margin:10px;
 }
 
 nav a{
-color:white;
 text-decoration:none;
-margin:0 15px;
-font-weight:bold;
+color:var(--azul);
+font-weight:600;
+padding:10px;
 }
 
-section{
-max-width:1000px;
+.container{
+max-width:1200px;
 margin:auto;
-padding:20px;
+padding:30px 20px;
 }
 
 .card{
 background:white;
-padding:25px;
-margin-bottom:20px;
-border-radius:12px;
-box-shadow:0 2px 10px rgba(0,0,0,.08);
+padding:30px;
+border-radius:20px;
+margin-bottom:25px;
+box-shadow:0 5px 20px rgba(0,0,0,.07);
 }
 
-h2{
-color:#003366;
+.card h2{
+color:var(--azul);
 margin-bottom:15px;
 }
 
-ul{
+.destaque{
+border-left:8px solid var(--azul-claro);
+}
+
+.cronometro{
+display:flex;
+justify-content:center;
+align-items:center;
+gap:20px;
+flex-wrap:wrap;
+margin-top:20px;
+}
+
+.box{
+background:#E3F2FD;
+padding:20px;
+border-radius:15px;
+min-width:120px;
+text-align:center;
+}
+
+.box span{
+display:block;
+font-size:2rem;
+font-weight:800;
+color:var(--azul);
+}
+
+.timeline{
+border-left:4px solid var(--azul);
 padding-left:20px;
 }
 
-footer{
-background:#003366;
-color:white;
-text-align:center;
-padding:20px;
-margin-top:30px;
+.timeline div{
+margin-bottom:20px;
 }
 
-.destaque{
-background:#e8f2ff;
-border-left:5px solid #0055aa;
+.timeline strong{
+color:var(--azul);
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+gap:20px;
+}
+
+.doc{
+background:#F8FAFC;
+padding:15px;
+border-radius:12px;
+border:1px solid #E2E8F0;
+}
+
+.doc a{
+text-decoration:none;
+color:var(--azul);
+font-weight:600;
+}
+
+.membro{
+background:#F8FAFC;
+padding:20px;
+border-radius:15px;
+text-align:center;
+}
+
+.membro h3{
+color:var(--azul);
+margin-bottom:5px;
+}
+
+footer{
+background:#0D47A1;
+color:white;
+text-align:center;
+padding:30px;
+margin-top:40px;
+}
+
+.botao{
+display:inline-block;
+background:var(--azul);
+color:white;
+padding:12px 20px;
+border-radius:10px;
+text-decoration:none;
+margin-top:10px;
+font-weight:600;
+}
+
+@media(max-width:768px){
+
+header h1{
+font-size:2rem;
+}
+
 }
 
 </style>
 
 </head>
+
 <body>
 
 <header>
+
 <h1>Eleições UMES Brejões 2026</h1>
-<p>Portal Oficial do Processo Eleitoral</p>
+
+<p>
+Portal Oficial do Processo Eleitoral da União Municipal dos e das Estudantes de Brejões
+</p>
+
 </header>
 
 <nav>
-<a href="#inicio">Início</a>
-<a href="#documentos">Documentos</a>
-<a href="#comissao">Comissão</a>
-<a href="#cronograma">Cronograma</a>
+
+<ul>
+<li><a href="#inicio">Início</a></li>
+<li><a href="#documentos">Documentos</a></li>
+<li><a href="#cronograma">Cronograma</a></li>
+<li><a href="#chapas">Chapas</a></li>
+<li><a href="#comissao">Comissão</a></li>
+<li><a href="#transparencia">Transparência</a></li>
+</ul>
+
 </nav>
 
-<section>
+<div class="container">
 
-<div class="card destaque" id="inicio">
-<h2>Bem-vindo(a)</h2>
+<section id="inicio">
+
+<div class="card destaque">
+
+<h2>Comunicado Oficial</h2>
+
 <p>
-Este portal reúne todas as informações oficiais do processo eleitoral da União Municipal dos e das Estudantes de Brejões.
+Este portal reúne todas as informações oficiais do Processo Eleitoral da UMES Brejões. Todos os documentos, comunicados, cronogramas e resultados serão divulgados exclusivamente por este ambiente digital.
 </p>
+
 </div>
 
-<div class="card" id="documentos">
-<h2>Documentos Oficiais</h2>
-<ul>
-<li>Decreto nº 01/2026</li>
-<li>Edital Eleitoral</li>
-<li>Regimento Eleitoral</li>
-<li>Atas e Comunicados</li>
-</ul>
+<div class="card">
+
+<h2>Contagem Regressiva para a Eleição</h2>
+
+<div class="cronometro">
+
+<div class="box">
+<span id="dias">00</span>
+Dias
 </div>
 
-<div class="card" id="comissao">
-<h2>Comissão Eleitoral</h2>
-<ul>
-<li>Evailson dos Santos Couto</li>
-<li>João Vinícius Lima Mota</li>
-<li>Mirela Santos Brito</li>
-</ul>
+<div class="box">
+<span id="horas">00</span>
+Horas
 </div>
 
-<div class="card" id="cronograma">
-<h2>Cronograma Eleitoral</h2>
-<p>Em breve.</p>
+<div class="box">
+<span id="minutos">00</span>
+Min
+</div>
+
+<div class="box">
+<span id="segundos">00</span>
+Seg
+</div>
+
+</div>
+
 </div>
 
 </section>
 
+<section id="documentos">
+
+<div class="card">
+
+<h2>Documentos Oficiais</h2>
+
+<div class="grid">
+
+<div class="doc">
+📄 Decreto nº 01/2026
+</div>
+
+<div class="doc">
+📄 Edital Eleitoral
+</div>
+
+<div class="doc">
+📄 Regimento Eleitoral
+</div>
+
+<div class="doc">
+📄 Atas e Comunicados
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<section id="cronograma">
+
+<div class="card">
+
+<h2>Cronograma Eleitoral</h2>
+
+<div class="timeline">
+
+<div>
+<strong>Publicação do Decreto</strong><br>
+Concluído
+</div>
+
+<div>
+<strong>Inscrição de Chapas</strong><br>
+A definir
+</div>
+
+<div>
+<strong>Homologação das Chapas</strong><br>
+A definir
+</div>
+
+<div>
+<strong>Período de Campanha</strong><br>
+A definir
+</div>
+
+<div>
+<strong>Votação</strong><br>
+A definir
+</div>
+
+<div>
+<strong>Resultado Oficial</strong><br>
+A definir
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<section id="chapas">
+
+<div class="card">
+
+<h2>Chapas Homologadas</h2>
+
+<p>
+As chapas homologadas pela Comissão Eleitoral serão divulgadas nesta seção.
+</p>
+
+</div>
+
+</section>
+
+<section id="comissao">
+
+<div class="card">
+
+<h2>Comissão Eleitoral</h2>
+
+<div class="grid">
+
+<div class="membro">
+<h3>Evailson dos Santos Couto</h3>
+<p>Membro Titular</p>
+</div>
+
+<div class="membro">
+<h3>João Vinícius Lima Mota</h3>
+<p>Membro Titular</p>
+</div>
+
+<div class="membro">
+<h3>Mirela Santos Brito</h3>
+<p>Membro Titular</p>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<section id="transparencia">
+
+<div class="card">
+
+<h2>Transparência</h2>
+
+<p>
+Todos os atos da Comissão Eleitoral serão publicados neste portal para garantir transparência, publicidade e ampla participação estudantil.
+</p>
+
+<a href="#" class="botao">
+Ver Publicações
+</a>
+
+</div>
+
+</section>
+
+</div>
+
 <footer>
+
+<p>
 © 2026 UMES Brejões • Comissão Eleitoral
+</p>
+
+<p>
+Portal Oficial do Processo Eleitoral
+</p>
+
 </footer>
+
+<script>
+
+const dataEleicao = new Date("Sep 30, 2026 08:00:00").getTime();
+
+setInterval(function(){
+
+const agora = new Date().getTime();
+
+const distancia = dataEleicao - agora;
+
+const dias = Math.floor(distancia/(1000*60*60*24));
+const horas = Math.floor((distancia%(1000*60*60*24))/(1000*60*60));
+const minutos = Math.floor((distancia%(1000*60*60))/(1000*60));
+const segundos = Math.floor((distancia%(1000*60))/1000);
+
+document.getElementById("dias").innerHTML=dias;
+document.getElementById("horas").innerHTML=horas;
+document.getElementById("minutos").innerHTML=minutos;
+document.getElementById("segundos").innerHTML=segundos;
+
+},1000);
+
+</script>
 
 </body>
 </html>
