@@ -2,7 +2,6 @@
 <html lang="pt-BR">
 
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -19,7 +18,6 @@
 --fundo:#F4F7FC;
 --texto:#2D3748;
 --branco:#FFFFFF;
---cinza:#718096;
 }
 
 *{
@@ -33,12 +31,13 @@ body{
 font-family:'Inter',sans-serif;
 background:var(--fundo);
 color:var(--texto);
+line-height:1.6;
 }
 
 header{
 background:linear-gradient(135deg,#0D47A1,#1976D2);
 color:white;
-padding:70px 20px;
+padding:80px 20px;
 text-align:center;
 }
 
@@ -49,7 +48,8 @@ margin-bottom:15px;
 
 header p{
 font-size:1.2rem;
-opacity:.95;
+max-width:800px;
+margin:auto;
 }
 
 nav{
@@ -57,25 +57,25 @@ background:white;
 box-shadow:0 2px 10px rgba(0,0,0,.08);
 position:sticky;
 top:0;
-z-index:100;
+z-index:1000;
 }
 
 nav ul{
+list-style:none;
 display:flex;
 justify-content:center;
 flex-wrap:wrap;
-list-style:none;
+padding:15px;
 }
 
 nav li{
-margin:10px;
+margin:5px 15px;
 }
 
 nav a{
 text-decoration:none;
 color:var(--azul);
 font-weight:600;
-padding:10px;
 }
 
 .container{
@@ -87,9 +87,9 @@ padding:30px 20px;
 .card{
 background:white;
 padding:30px;
-border-radius:20px;
+border-radius:18px;
 margin-bottom:25px;
-box-shadow:0 5px 20px rgba(0,0,0,.07);
+box-shadow:0 5px 20px rgba(0,0,0,.08);
 }
 
 .card h2{
@@ -98,31 +98,27 @@ margin-bottom:15px;
 }
 
 .destaque{
-border-left:8px solid var(--azul-claro);
+border-left:6px solid var(--azul-claro);
 }
 
-.cronometro{
-display:flex;
-justify-content:center;
-align-items:center;
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
 gap:20px;
-flex-wrap:wrap;
-margin-top:20px;
 }
 
-.box{
-background:#E3F2FD;
+.doc,
+.membro{
+background:#F8FAFC;
 padding:20px;
-border-radius:15px;
-min-width:120px;
-text-align:center;
+border-radius:12px;
+border:1px solid #E2E8F0;
 }
 
-.box span{
-display:block;
-font-size:2rem;
-font-weight:800;
+.doc a{
+text-decoration:none;
 color:var(--azul);
+font-weight:600;
 }
 
 .timeline{
@@ -138,60 +134,55 @@ margin-bottom:20px;
 color:var(--azul);
 }
 
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-gap:20px;
+.cronometro{
+display:flex;
+justify-content:center;
+gap:15px;
+flex-wrap:wrap;
+margin-top:20px;
 }
 
-.doc{
-background:#F8FAFC;
-padding:15px;
-border-radius:12px;
-border:1px solid #E2E8F0;
-}
-
-.doc a{
-text-decoration:none;
-color:var(--azul);
-font-weight:600;
-}
-
-.membro{
-background:#F8FAFC;
+.box{
+background:#E3F2FD;
 padding:20px;
-border-radius:15px;
+border-radius:12px;
+min-width:120px;
 text-align:center;
 }
 
-.membro h3{
+.box span{
+display:block;
+font-size:2rem;
+font-weight:800;
 color:var(--azul);
-margin-bottom:5px;
+}
+
+.botao{
+display:inline-block;
+padding:12px 20px;
+background:var(--azul);
+color:white;
+text-decoration:none;
+border-radius:10px;
+margin-top:15px;
 }
 
 footer{
 background:#0D47A1;
 color:white;
 text-align:center;
-padding:30px;
+padding:35px 20px;
 margin-top:40px;
-}
-
-.botao{
-display:inline-block;
-background:var(--azul);
-color:white;
-padding:12px 20px;
-border-radius:10px;
-text-decoration:none;
-margin-top:10px;
-font-weight:600;
 }
 
 @media(max-width:768px){
 
 header h1{
 font-size:2rem;
+}
+
+header p{
+font-size:1rem;
 }
 
 }
@@ -207,7 +198,7 @@ font-size:2rem;
 <h1>Eleições UMES Brejões 2026</h1>
 
 <p>
-Portal Oficial do Processo Eleitoral da União Municipal dos e das Estudantes de Brejões
+Portal Oficial do Processo Eleitoral da União Municipal dos e das Estudantes de Brejões.
 </p>
 
 </header>
@@ -234,7 +225,7 @@ Portal Oficial do Processo Eleitoral da União Municipal dos e das Estudantes de
 <h2>Comunicado Oficial</h2>
 
 <p>
-Este portal reúne todas as informações oficiais do Processo Eleitoral da UMES Brejões. Todos os documentos, comunicados, cronogramas e resultados serão divulgados exclusivamente por este ambiente digital.
+Este portal reúne todos os atos, comunicados, editais, cronogramas, documentos e resultados do Processo Eleitoral da UMES Brejões.
 </p>
 
 </div>
@@ -257,12 +248,12 @@ Horas
 
 <div class="box">
 <span id="minutos">00</span>
-Min
+Minutos
 </div>
 
 <div class="box">
 <span id="segundos">00</span>
-Seg
+Segundos
 </div>
 
 </div>
@@ -281,7 +272,7 @@ Seg
 
 <div class="doc">
 <a href="documentos/DECRETO%20N%C2%B0%20001%20DE%2021%20DE%20MAIO%20DE%202025.pdf" target="_blank">
-📄 Decreto nº 001/2026 – Abrir Documento
+📄 Decreto nº 001/2025
 </a>
 </div>
 
@@ -337,7 +328,7 @@ A definir
 </div>
 
 <div>
-<strong>Resultado Oficial</strong><br>
+<strong>Divulgação do Resultado</strong><br>
 A definir
 </div>
 
@@ -354,7 +345,7 @@ A definir
 <h2>Chapas Homologadas</h2>
 
 <p>
-As chapas homologadas pela Comissão Eleitoral serão divulgadas nesta seção.
+As chapas homologadas pela Comissão Eleitoral serão divulgadas nesta seção após o encerramento do período de inscrições.
 </p>
 
 </div>
@@ -400,8 +391,8 @@ As chapas homologadas pela Comissão Eleitoral serão divulgadas nesta seção.
 Todos os atos da Comissão Eleitoral serão publicados neste portal para garantir transparência, publicidade e ampla participação estudantil.
 </p>
 
-<a href="#" class="botao">
-Ver Publicações
+<a href="#documentos" class="botao">
+Ver Documentos
 </a>
 
 </div>
@@ -412,37 +403,38 @@ Ver Publicações
 
 <footer>
 
+<p><strong>UMES Brejões</strong></p>
+
 <p>
-© 2026 UMES Brejões • Comissão Eleitoral
+Portal Oficial do Processo Eleitoral 2026
 </p>
 
 <p>
-Portal Oficial do Processo Eleitoral
+Comissão Eleitoral • Todos os direitos reservados
 </p>
 
 </footer>
 
 <script>
 
-const dataEleicao = new Date("Sep 30, 2026 08:00:00").getTime();
+const dataEleicao = new Date("2026-09-30T08:00:00").getTime();
 
-setInterval(function(){
+setInterval(() => {
 
 const agora = new Date().getTime();
-
 const distancia = dataEleicao - agora;
 
-const dias = Math.floor(distancia/(1000*60*60*24));
-const horas = Math.floor((distancia%(1000*60*60*24))/(1000*60*60));
-const minutos = Math.floor((distancia%(1000*60*60))/(1000*60));
-const segundos = Math.floor((distancia%(1000*60))/1000);
+const dias = Math.floor(distancia / (1000 * 60 * 60 * 24));
+const horas = Math.floor((distancia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+const minutos = Math.floor((distancia % (1000 * 60 * 60)) / (1000 * 60));
+const segundos = Math.floor((distancia % (1000 * 60)) / 1000);
 
-document.getElementById("dias").innerHTML=dias;
-document.getElementById("horas").innerHTML=horas;
-document.getElementById("minutos").innerHTML=minutos;
-document.getElementById("segundos").innerHTML=segundos;
+document.getElementById("dias").innerText = dias;
+document.getElementById("horas").innerText = horas;
+document.getElementById("minutos").innerText = minutos;
+document.getElementById("segundos").innerText = segundos;
 
-},1000);
+}, 1000);
 
 </script>
 
