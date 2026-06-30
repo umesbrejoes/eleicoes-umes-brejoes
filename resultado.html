@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resultados - Comissão Eleitoral</title>
+
+<style>
+body{
+font-family:Arial,sans-serif;
+background:#f4f6f9;
+padding:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:10px;
+}
+
+input{
+width:100%;
+padding:10px;
+margin:10px 0;
+}
+
+button{
+padding:10px 20px;
+cursor:pointer;
+}
+
+.card{
+background:#eef5ff;
+padding:15px;
+margin-top:15px;
+border-radius:8px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Painel da Comissão Eleitoral</h1>
+
+<div id="login">
+
+<input type="email" id="email" placeholder="E-mail">
+
+<input type="password" id="senha" placeholder="Senha">
+
+<button onclick="entrar()">
+Entrar
+</button>
+
+</div>
+
+<div id="painel" style="display:none">
+
+<h2>Resultados</h2>
+
+<div class="card">
+Chapa 01:
+<span id="chapa1">0</span>
+</div>
+
+<div class="card">
+Chapa 02:
+<span id="chapa2">0</span>
+</div>
+
+<div class="card">
+Brancos:
+<span id="brancos">0</span>
+</div>
+
+<div class="card">
+Total:
+<span id="total">0</span>
+</div>
+
+</div>
+
+</div>
+
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+
+import {
+getAuth,
+signInWithEmailAndPassword
+}
+from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+
+import {
+getFirestore,
+collection,
+getDocs
+}
+from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+
+const firebaseConfig = {
+
+apiKey: "SUA_NOVA_API_KEY",
+
+authDomain: "umes-brejoes-eleicoes-2026.firebaseapp.com",
+
+projectId: "umes-brejoes-eleicoes-2026",
+
+storageBucket: "umes-brejoes-eleicoes-2026.firebasestorage.app",
+
+messagingSenderId: "406100216755",
+
+appId: "1:406100216755:web:f994e5e2d386a2e97ed9c6"
+
+};
+
+const app = initializeApp(firebaseConfig);
+
+const auth = getAuth(app);
+
+const db = getFirestore(app);
+
+window.entrar = async function(){
+
+const email =
+document.getElementById("email").value;
+
+const senha =
+document.getElementById("senha").value;
+
+try{
+
+await signInWithEmailAndPassword(
+auth,
+email,
+senha
+);
+
+document.getElementById("login").style.display="none";
+
+document.getElementById("painel").style.display="block";
+
+carregarResultados();
+
+}catch{
+
+alert("Usuário ou senha inválidos.");
+
+}
+
+}
+
+async function carregarResultados(){
+
+let chapa1 = 0;
+let chapa2 = 0;
+let brancos = 0;
+
+const snapshot =
+await getDocs(collection(db,"votos"));
+
+snapshot.forEach((doc)=>{
+
+const voto = doc.data().voto;
+
+if(voto === "Chapa 01") chapa1++;
+
+else if(voto === "Chapa 02") chapa2++;
+
+else brancos++;
+
+});
+
+document.getElementById("chapa1").innerText = chapa1;
+document.getElementById("chapa2").innerText = chapa2;
+document.getElementById("brancos").innerText = brancos;
+document.getElementById("total").innerText =
+chapa1 + chapa2 + brancos;
+
+}
+
+</script>
+
+</body>
+</html>
