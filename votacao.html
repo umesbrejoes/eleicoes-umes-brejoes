@@ -190,39 +190,43 @@ VOTO EM BRANCO
 
 <script>
 
+<script>
+
 function registrarVoto(){
 
-let nome = document.getElementById("nome").value;
+let nome = document.getElementById("nome").value.trim();
+let escola = document.getElementById("escola").value.trim();
+let turma = document.getElementById("turma").value.trim();
+let matricula = document.getElementById("matricula").value.trim();
 
 let voto = document.querySelector('input[name="voto"]:checked');
 
-if(nome === ""){
-    alert("Informe seu nome.");
+if(
+    nome === "" ||
+    escola === "" ||
+    turma === "" ||
+    matricula === "" ||
+    !voto
+){
+    alert("Por favor, preencha todos os campos e selecione uma opção de voto antes de confirmar.");
     return;
 }
 
-if(!voto){
-    alert("Selecione uma opção de voto.");
-    return;
-}
-
-let protocolo = "TESTE-" + Math.floor(Math.random() * 100000);
+let protocolo = "UMES-" + Math.floor(Math.random() * 1000000);
 
 document.getElementById("resultado").style.display = "block";
 
 document.getElementById("resultado").innerHTML = `
 <h3>✅ Voto registrado com sucesso!</h3>
 
-<p><strong>Eleitor:</strong> ${nome}</p>
-
-<p><strong>Voto:</strong> ${voto.value}</p>
+<p>Seu voto foi recebido pela Comissão Eleitoral.</p>
 
 <p><strong>Protocolo:</strong> ${protocolo}</p>
 
-<p>Obrigado por participar da eleição da UMES Brejões.</p>
+<p>Guarde este protocolo para eventual conferência.</p>
 `;
-}
 
+}
 </script>
 
 </body>
