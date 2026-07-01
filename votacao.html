@@ -175,10 +175,8 @@ const firebaseConfig = {
   measurementId: "G-F5EWF15PVY"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-};
+const db = getFirestore(app);
 
 window.registrarVoto = async function(){
 
@@ -207,23 +205,47 @@ return;
 
 try{
 
-const consulta = query(
+// Verifica CPF ou Matrícula
+const consultaIdentificador = query(
 collection(db,"votos"),
 where("identificador","==",identificador)
 );
 
-const resultadoConsulta = await getDocs(consulta);
+const resultadoIdentificador =
+await getDocs(consultaIdentificador);
 
-if(!resultadoConsulta.empty){
+if(!resultadoIdentificador.empty){
+
 alert(
 "Já existe um voto registrado para esta matrícula ou CPF."
 );
+
 return;
 }
 
+// Verifica E-mail
+const consultaEmail = query(
+collection(db,"votos"),
+where("email","==",email)
+);
+
+const resultadoEmail =
+await getDocs(consultaEmail);
+
+if(!resultadoEmail.empty){
+
+alert(
+"Já existe um voto registrado para este e-mail."
+);
+
+return;
+}
+
+// Gera protocolo
 const protocolo =
 "UMES-" + Date.now();
 
+// Salva voto
 await addDoc(collection(db,"votos"),{
 
 nome,
@@ -237,22 +259,16 @@ dataHora:new Date()
 
 });
 
-document.getElementById("resultado").style.display="block";
+document.getElementById("resultado").style.display = "block";
 
 document.getElementById("resultado").innerHTML = `
 <h3>✅ Voto registrado com sucesso!</h3>
 
-<p>
-Seu voto foi recebido pela Comissão Eleitoral.
-</p>
+<p>Seu voto foi recebido pela Comissão Eleitoral.</p>
 
-<p>
-<strong>Protocolo:</strong> ${protocolo}
-</p>
+<p><strong>Protocolo:</strong> ${protocolo}</p>
 
-<p>
-Guarde este protocolo.
-</p>
+<p>Guarde este protocolo para eventual conferência.</p>
 `;
 
 document.querySelector("button").disabled = true;
