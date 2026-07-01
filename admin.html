@@ -1,211 +1,1539 @@
 <!DOCTYPE html>
+
 <html lang="pt-BR">
 
 <head>
 
 <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
-<title>Painel Administrativo | UMES Brejões</title>
+<title>
+
+Painel Administrativo • UMES Brejões
+
+</title>
 
 <link rel="stylesheet" href="css/admin.css">
+
+<link
+rel="preconnect"
+href="https://fonts.googleapis.com">
+
+<link
+rel="preconnect"
+href="https://fonts.gstatic.com"
+crossorigin>
+
+<link
+href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+rel="stylesheet">
+
+<link
+rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 
 </head>
 
 <body>
 
-<div id="login">
+<div class="layout">
 
-<div class="login-box">
+<!-- ============================= -->
+<!-- MENU LATERAL -->
+<!-- ============================= -->
 
-<img src="imagens/imagens/logo-umes.png" class="logo">
+<aside class="sidebar">
 
-<h1>Comissão Eleitoral</h1>
+<div class="logo">
+
+<h2>
+
+UMES
+
+</h2>
 
 <p>
-Painel Administrativo da Eleição
+
+Brejões
+
 </p>
 
-<input
-type="email"
-id="email"
-placeholder="E-mail">
-
-<input
-type="password"
-id="senha"
-placeholder="Senha">
-
-<button onclick="entrar()">
-Entrar
-</button>
-
 </div>
 
-</div>
+<nav>
 
-<div id="painel">
+<ul>
 
-<header>
+<li class="ativo">
 
-<img src="imagens/imagens/logo-umes.png" class="logo-header">
+<a href="#dashboard">
+
+<i class="fa-solid fa-house"></i>
+
+<span>
+
+Dashboard
+
+</span>
+
+</a>
+
+</li>
+
+<li>
+
+<a href="#inscricoes">
+
+<i class="fa-solid fa-file-signature"></i>
+
+<span>
+
+Inscrições
+
+</span>
+
+</a>
+
+</li>
+
+<li>
+
+<a href="#homologacoes">
+
+<i class="fa-solid fa-circle-check"></i>
+
+<span>
+
+Homologações
+
+</span>
+
+</a>
+
+</li>
+
+<li>
+
+<a href="#votacao">
+
+<i class="fa-solid fa-box-ballot"></i>
+
+<span>
+
+Votação
+
+</span>
+
+</a>
+
+</li>
+
+<li>
+
+<a href="#eleitores">
+
+<i class="fa-solid fa-users"></i>
+
+<span>
+
+Eleitores
+
+</span>
+
+</a>
+
+</li>
+
+<li>
+
+<a href="#resultados">
+
+<i class="fa-solid fa-chart-column"></i>
+
+<span>
+
+Resultados
+
+</span>
+
+</a>
+
+</li>
+
+<li>
+
+<a href="#auditoria">
+
+<i class="fa-solid fa-magnifying-glass-chart"></i>
+
+<span>
+
+Auditoria
+
+</span>
+
+</a>
+
+</li>
+
+<li>
+
+<a href="#logs">
+
+<i class="fa-solid fa-clock-rotate-left"></i>
+
+<span>
+
+Logs
+
+</span>
+
+</a>
+
+</li>
+
+<li>
+
+<a href="#lixeira">
+
+<i class="fa-solid fa-trash"></i>
+
+<span>
+
+Lixeira
+
+</span>
+
+</a>
+
+</li>
+
+<li>
+
+<a href="#configuracoes">
+
+<i class="fa-solid fa-gear"></i>
+
+<span>
+
+Configurações
+
+</span>
+
+</a>
+
+</li>
+
+</ul>
+
+</nav>
+
+</aside>
+
+<!-- ============================= -->
+<!-- CONTEÚDO -->
+<!-- ============================= -->
+
+<div class="conteudo">
+
+<!-- ============================= -->
+<!-- CABEÇALHO -->
+<!-- ============================= -->
+
+<header class="topo">
 
 <div>
 
 <h1>
-PAINEL ADMINISTRATIVO
+
+Painel Administrativo
+
 </h1>
 
 <p>
-União Municipal dos e das Estudantes de Brejões
+
+Sistema Oficial do Processo Eleitoral
+
+UMES Brejões • 2026
+
 </p>
+
+</div>
+
+<div class="usuario">
+
+<div>
+
+<strong id="nomeUsuario">
+
+Comissão Eleitoral
+
+</strong>
+
+<br>
+
+<small>
+
+Administrador
+
+</small>
+
+</div>
+
+<button
+id="btnSair">
+
+<i class="fa-solid fa-right-from-bracket"></i>
+
+Sair
+
+</button>
 
 </div>
 
 </header>
 
-<section class="cards">
+<!-- ============================= -->
+<!-- DASHBOARD -->
+<!-- ============================= -->
+
+<main>
+
+<section
+id="dashboard"
+class="pagina">
+
+<h2>
+
+Dashboard
+
+</h2>
+
+<p>
+
+Acompanhe em tempo real o andamento do Processo Eleitoral da UMES Brejões.
+
+</p>
+
+<div class="cards">
+
+<!-- ========================================== -->
+<!-- CARTÕES DE ESTATÍSTICAS -->
+<!-- ========================================== -->
 
 <div class="card">
 
-<h2>
-Situação
-</h2>
+<div class="icone azul">
 
-<span id="status">
-Carregando...
+<i class="fa-solid fa-file-signature"></i>
+
+</div>
+
+<div class="informacoes">
+
+<h3>
+
+Inscrições
+
+</h3>
+
+<span id="totalInscricoes">
+
+0
+
 </span>
+
+<small>
+
+Recebidas
+
+</small>
+
+</div>
 
 </div>
 
 <div class="card">
 
-<h2>
+<div class="icone amarelo">
+
+<i class="fa-solid fa-hourglass-half"></i>
+
+</div>
+
+<div class="informacoes">
+
+<h3>
+
+Pendentes
+
+</h3>
+
+<span id="totalPendentes">
+
+0
+
+</span>
+
+<small>
+
+Aguardando análise
+
+</small>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<div class="icone verde">
+
+<i class="fa-solid fa-circle-check"></i>
+
+</div>
+
+<div class="informacoes">
+
+<h3>
+
+Homologadas
+
+</h3>
+
+<span id="totalHomologadas">
+
+0
+
+</span>
+
+<small>
+
+Chapas aptas
+
+</small>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<div class="icone vermelho">
+
+<i class="fa-solid fa-circle-xmark"></i>
+
+</div>
+
+<div class="informacoes">
+
+<h3>
+
+Indeferidas
+
+</h3>
+
+<span id="totalIndeferidas">
+
+0
+
+</span>
+
+<small>
+
+Não homologadas
+
+</small>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<div class="icone roxo">
+
+<i class="fa-solid fa-users"></i>
+
+</div>
+
+<div class="informacoes">
+
+<h3>
+
 Eleitores
-</h2>
+
+</h3>
 
 <span id="totalEleitores">
+
 0
+
 </span>
+
+<small>
+
+Registrados
+
+</small>
+
+</div>
 
 </div>
 
 <div class="card">
 
-<h2>
+<div class="icone azul">
+
+<i class="fa-solid fa-check-to-slot"></i>
+
+</div>
+
+<div class="informacoes">
+
+<h3>
+
 Votos
-</h2>
+
+</h3>
 
 <span id="totalVotos">
+
 0
+
 </span>
+
+<small>
+
+Computados
+
+</small>
+
+</div>
 
 </div>
 
 <div class="card">
 
-<h2>
-Chapas
-</h2>
+<div class="icone verde">
 
-<span id="totalChapas">
-0
-</span>
+<i class="fa-solid fa-unlock"></i>
 
 </div>
 
-</section>
+<div class="informacoes">
 
-<section class="botoes">
+<h3>
 
-<button
-onclick="abrirVotacao()">
+Votação
 
-🟢 Abrir votação
+</h3>
+
+<span id="statusVotacao">
+
+Fechada
+
+</span>
+
+<small>
+
+Situação atual
+
+</small>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<div class="icone cinza">
+
+<i class="fa-solid fa-user-group"></i>
+
+</div>
+
+<div class="informacoes">
+
+<h3>
+
+Comissão
+
+</h3>
+
+<span id="totalComissao">
+
+0
+
+</span>
+
+<small>
+
+Membros
+
+</small>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ========================================== -->
+<!-- PAINEL PRINCIPAL -->
+<!-- ========================================== -->
+
+<section class="painel-principal">
+
+<div class="bloco">
+
+<h3>
+
+Resumo Geral
+
+</h3>
+
+<table class="tabela-resumo">
+
+<tr>
+
+<td>
+
+Ano da Eleição
+
+</td>
+
+<td id="anoEleicao">
+
+2026
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+Situação das Inscrições
+
+</td>
+
+<td id="situacaoInscricoes">
+
+Carregando...
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+Situação da Votação
+
+</td>
+
+<td id="situacaoVotacao">
+
+Carregando...
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+Última atualização
+
+</td>
+
+<td id="ultimaAtualizacao">
+
+--
+
+</td>
+
+</tr>
+
+</table>
+
+</div>
+
+<div class="bloco">
+
+<h3>
+
+Ações Rápidas
+
+</h3>
+
+<div class="acoes-rapidas">
+
+<button id="btnAbrirVotacao">
+
+<i class="fa-solid fa-unlock"></i>
+
+Abrir Votação
 
 </button>
 
-<button
-onclick="encerrarVotacao()">
+<button id="btnEncerrarVotacao">
 
-🔴 Encerrar votação
+<i class="fa-solid fa-lock"></i>
 
-</button>
-
-<button
-onclick="gerarAtaPDF()">
-
-📄 Ata Oficial
+Encerrar Votação
 
 </button>
 
-<button
-onclick="gerarAuditoriaPDF()">
+<button id="btnNovaChapa">
 
-📑 Auditoria
-
-</button>
-
-</section>
-
-<section class="cadastro">
-
-<h2>
+<i class="fa-solid fa-plus"></i>
 
 Cadastrar Chapa
 
+</button>
+
+<button id="btnAta">
+
+<i class="fa-solid fa-file-pdf"></i>
+
+Ata Oficial
+
+</button>
+
+<button id="btnAuditoria">
+
+<i class="fa-solid fa-clipboard-list"></i>
+
+Relatório de Auditoria
+
+</button>
+
+<button id="btnAtualizar">
+
+<i class="fa-solid fa-rotate"></i>
+
+Atualizar Painel
+
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ========================================== -->
+<!-- INSCRIÇÕES -->
+<!-- ========================================== -->
+
+<section
+id="inscricoes"
+class="pagina">
+
+<div class="cabecalho-secao">
+
+<h2>
+
+Inscrições de Chapas
+
 </h2>
+
+<div class="acoes-superiores">
+
+<input
+type="search"
+id="pesquisa"
+placeholder="Pesquisar por número, chapa, presidente ou vice...">
+
+<button id="btnPesquisar">
+
+<i class="fa-solid fa-magnifying-glass"></i>
+
+Pesquisar
+
+</button>
+
+</div>
+
+</div>
+
+<!-- ========================================== -->
+<!-- FILTROS -->
+<!-- ========================================== -->
+
+<div class="filtros">
+
+<button
+class="filtro ativo"
+data-status="todas">
+
+Todas
+
+</button>
+
+<button
+class="filtro"
+data-status="Pendente">
+
+Pendentes
+
+</button>
+
+<button
+class="filtro"
+data-status="Homologada">
+
+Homologadas
+
+</button>
+
+<button
+class="filtro"
+data-status="Indeferida">
+
+Indeferidas
+
+</button>
+
+<button
+class="filtro"
+data-status="Lixeira">
+
+Lixeira
+
+</button>
+
+</div>
+
+<!-- ========================================== -->
+<!-- TABELA -->
+<!-- ========================================== -->
+
+<div class="tabela-container">
+
+<table
+class="tabela-inscricoes">
+
+<thead>
+
+<tr>
+
+<th>
+
+Nº
+
+</th>
+
+<th>
+
+Chapa
+
+</th>
+
+<th>
+
+Presidente
+
+</th>
+
+<th>
+
+Vice
+
+</th>
+
+<th>
+
+Status
+
+</th>
+
+<th>
+
+Data
+
+</th>
+
+<th>
+
+Comissão
+
+</th>
+
+<th>
+
+Ações
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody
+id="listaInscricoes">
+
+<tr>
+
+<td colspan="8">
+
+Carregando inscrições...
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</section>
+
+<!-- ========================================== -->
+<!-- PAGINAÇÃO -->
+<!-- ========================================== -->
+
+<section
+class="paginacao">
+
+<button
+id="paginaAnterior">
+
+<i class="fa-solid fa-chevron-left"></i>
+
+Anterior
+
+</button>
+
+<span
+id="paginaAtual">
+
+Página 1
+
+</span>
+
+<button
+id="proximaPagina">
+
+Próxima
+
+<i class="fa-solid fa-chevron-right"></i>
+
+</button>
+
+</section>
+
+<!-- ========================================== -->
+<!-- RESUMO -->
+<!-- ========================================== -->
+
+<section
+class="rodape-tabela">
+
+<div>
+
+<strong>
+
+Total de inscrições:
+
+</strong>
+
+<span id="contadorInscricoes">
+
+0
+
+</span>
+
+</div>
+
+<div>
+
+<strong>
+
+Filtradas:
+
+</strong>
+
+<span id="contadorFiltro">
+
+0
+
+</span>
+
+</div>
+
+<div>
+
+<strong>
+
+Última sincronização:
+
+</strong>
+
+<span id="ultimaSincronizacao">
+
+--
+
+</span>
+
+</div>
+
+</section>
+
+<!-- ========================================== -->
+<!-- MODAL DE VISUALIZAÇÃO DA INSCRIÇÃO -->
+<!-- ========================================== -->
+
+<div
+id="modalVisualizar"
+class="modal">
+
+<div class="modal-conteudo modal-grande">
+
+<div class="modal-topo">
+
+<h2>
+
+Detalhes da Inscrição
+
+</h2>
+
+<button
+class="fecharModal">
+
+<i class="fa-solid fa-xmark"></i>
+
+</button>
+
+</div>
+
+<div
+id="conteudoInscricao">
+
+<p>
+
+Carregando inscrição...
+
+</p>
+
+</div>
+
+<div class="modal-botoes">
+
+<button
+id="btnModalHomologar">
+
+<i class="fa-solid fa-circle-check"></i>
+
+Homologar
+
+</button>
+
+<button
+id="btnModalCorrecao">
+
+<i class="fa-solid fa-pen"></i>
+
+Solicitar Correção
+
+</button>
+
+<button
+id="btnModalIndeferir">
+
+<i class="fa-solid fa-circle-xmark"></i>
+
+Indeferir
+
+</button>
+
+<button
+id="btnModalExcluir">
+
+<i class="fa-solid fa-trash"></i>
+
+Mover para Lixeira
+
+</button>
+
+<button
+class="fecharModal">
+
+Fechar
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ========================================== -->
+<!-- MODAL HOMOLOGAR -->
+<!-- ========================================== -->
+
+<div
+id="modalHomologar"
+class="modal">
+
+<div class="modal-conteudo">
+
+<h2>
+
+Homologar Inscrição
+
+</h2>
+
+<p>
+
+Confirma a homologação desta inscrição?
+
+</p>
+
+<label>
+
+Número oficial da chapa
+
+</label>
 
 <input
 type="number"
-id="numero"
-placeholder="Número da chapa">
+id="numeroChapaHomologada"
+placeholder="Ex.: 01">
 
-<input
-type="text"
-id="nomeChapa"
-placeholder="Nome da chapa">
+<label>
 
-<input
-type="text"
-id="presidente"
-placeholder="Nome do(a) Presidente">
+Observações (opcional)
 
-<input
-type="text"
-id="vice"
-placeholder="Nome do(a) Vice-Presidente">
+</label>
 
-<button onclick="salvarChapa()">
-Cadastrar Chapa
+<textarea
+id="observacaoHomologacao"
+rows="4"></textarea>
+
+<div class="modal-botoes">
+
+<button
+id="confirmarHomologacao">
+
+✔ Homologar
+
 </button>
 
-</section>
+<button
+class="fecharModal">
 
-<section>
+Cancelar
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ========================================== -->
+<!-- MODAL SOLICITAR CORREÇÃO -->
+<!-- ========================================== -->
+
+<div
+id="modalCorrecao"
+class="modal">
+
+<div class="modal-conteudo">
 
 <h2>
 
-Chapas Homologadas
+Solicitar Correção
 
 </h2>
 
-<div id="listaChapas">
+<p>
+
+Informe quais documentos ou informações precisam ser corrigidos.
+
+</p>
+
+<textarea
+id="textoCorrecao"
+rows="8"
+placeholder="Descreva detalhadamente as correções necessárias..."></textarea>
+
+<div class="modal-botoes">
+
+<button
+id="confirmarCorrecao">
+
+Enviar Solicitação
+
+</button>
+
+<button
+class="fecharModal">
+
+Cancelar
+
+</button>
 
 </div>
 
-</section>
+</div>
 
-<footer>
+</div>
 
-Sistema Eleitoral UMES Brejões • Comissão Eleitoral 2026
+<!-- ========================================== -->
+<!-- MODAL INDEFERIMENTO -->
+<!-- ========================================== -->
+
+<div
+id="modalIndeferir"
+class="modal">
+
+<div class="modal-conteudo">
+
+<h2>
+
+Indeferir Inscrição
+
+</h2>
+
+<p>
+
+Informe o motivo do indeferimento.
+
+</p>
+
+<textarea
+id="motivoIndeferimento"
+rows="8"
+placeholder="Motivo do indeferimento..."></textarea>
+
+<div class="modal-botoes">
+
+<button
+id="confirmarIndeferimento">
+
+❌ Indeferir
+
+</button>
+
+<button
+class="fecharModal">
+
+Cancelar
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ========================================== -->
+<!-- MODAL EXCLUSÃO -->
+<!-- ========================================== -->
+
+<div
+id="modalExcluir"
+class="modal">
+
+<div class="modal-conteudo">
+
+<h2>
+
+Mover para Lixeira
+
+</h2>
+
+<p>
+
+A inscrição será removida da lista principal e enviada para a lixeira.
+
+Ela poderá ser restaurada posteriormente.
+
+</p>
+
+<label>
+
+Motivo da exclusão
+
+</label>
+
+<textarea
+id="motivoExclusao"
+rows="5"></textarea>
+
+<div class="modal-botoes">
+
+<button
+id="confirmarExclusao">
+
+🗑 Mover para Lixeira
+
+</button>
+
+<button
+class="fecharModal">
+
+Cancelar
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ========================================== -->
+<!-- MODAL RESTAURAÇÃO -->
+<!-- ========================================== -->
+
+<div
+id="modalRestaurar"
+class="modal">
+
+<div class="modal-conteudo">
+
+<h2>
+
+Restaurar Inscrição
+
+</h2>
+
+<p>
+
+Deseja restaurar esta inscrição para a lista principal?
+
+</p>
+
+<div class="modal-botoes">
+
+<button
+id="confirmarRestauracao">
+
+Restaurar
+
+</button>
+
+<button
+class="fecharModal">
+
+Cancelar
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ========================================== -->
+<!-- MODAL EXCLUSÃO DEFINITIVA -->
+<!-- ========================================== -->
+
+<div
+id="modalExcluirDefinitivo"
+class="modal">
+
+<div class="modal-conteudo">
+
+<h2>
+
+Excluir Permanentemente
+
+</h2>
+
+<p>
+
+⚠ Esta ação é irreversível.
+
+A inscrição será apagada definitivamente do sistema.
+
+</p>
+
+<div class="modal-botoes">
+
+<button
+id="confirmarExclusaoDefinitiva">
+
+Excluir Permanentemente
+
+</button>
+
+<button
+class="fecharModal">
+
+Cancelar
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ========================================== -->
+<!-- ÁREA DE NOTIFICAÇÕES (TOAST) -->
+<!-- ========================================== -->
+
+<div id="toast" class="toast">
+
+<div class="toast-icone">
+
+<i class="fa-solid fa-circle-info"></i>
+
+</div>
+
+<div class="toast-texto">
+
+<span id="toastTitulo">
+
+Sistema
+
+</span>
+
+<p id="toastMensagem">
+
+Mensagem do sistema.
+
+</p>
+
+</div>
+
+<button id="fecharToast">
+
+<i class="fa-solid fa-xmark"></i>
+
+</button>
+
+</div>
+
+<!-- ========================================== -->
+<!-- TELA DE CARREGAMENTO -->
+<!-- ========================================== -->
+
+<div id="loading" class="loading">
+
+<div class="loading-box">
+
+<div class="spinner"></div>
+
+<h3>
+
+Carregando...
+
+</h3>
+
+<p>
+
+Aguarde enquanto o sistema processa as informações.
+
+</p>
+
+</div>
+
+</div>
+
+<!-- ========================================== -->
+<!-- MODAL DE CONFIRMAÇÃO -->
+<!-- ========================================== -->
+
+<div id="modalConfirmacao" class="modal">
+
+<div class="modal-conteudo">
+
+<h2>
+
+Confirmação
+
+</h2>
+
+<p id="textoConfirmacao">
+
+Deseja realmente realizar esta ação?
+
+</p>
+
+<div class="modal-botoes">
+
+<button id="btnConfirmarAcao">
+
+Confirmar
+
+</button>
+
+<button class="fecharModal">
+
+Cancelar
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ========================================== -->
+<!-- RODAPÉ -->
+<!-- ========================================== -->
+
+<footer class="rodape">
+
+<div>
+
+<strong>
+
+União Municipal dos e das Estudantes de Brejões
+
+</strong>
+
+</div>
+
+<div>
+
+Sistema Oficial do Processo Eleitoral • 2026
+
+</div>
+
+<div>
+
+Painel Administrativo da Comissão Eleitoral
+
+</div>
 
 </footer>
 
+</main>
+
 </div>
 
+</div>
+
+<!-- ========================================== -->
+<!-- BIBLIOTECAS -->
+<!-- ========================================== -->
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<!-- ========================================== -->
+<!-- JAVASCRIPT -->
+<!-- ========================================== -->
 
 <script type="module" src="js/admin.js"></script>
 
