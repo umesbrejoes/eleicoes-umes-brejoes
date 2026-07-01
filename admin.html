@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel Administrativo - UMES Brejões</title>
+
+<style>
+body{
+font-family:Arial,sans-serif;
+background:#f4f6f9;
+padding:20px;
+}
+
+.container{
+max-width:1000px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:10px;
+}
+
+.card{
+background:#eef5ff;
+padding:15px;
+margin-top:15px;
+border-radius:8px;
+}
+
+button{
+padding:10px 20px;
+margin:5px;
+cursor:pointer;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Painel Administrativo</h1>
+
+<div class="card">
+Situação da votação:
+<span id="status">Carregando...</span>
+</div>
+
+<div class="card">
+Total de eleitores:
+<span id="totalEleitores">0</span>
+</div>
+
+<div class="card">
+Total de votos:
+<span id="totalVotos">0</span>
+</div>
+
+<h2>Controle da Urna</h2>
+
+<button>
+🟢 Abrir Votação
+</button>
+
+<button>
+🔴 Encerrar Votação
+</button>
+
+<h2>Cadastro de Chapas</h2>
+
+<input type="text" placeholder="Número da Chapa">
+
+<input type="text" placeholder="Nome da Chapa">
+
+<input type="text" placeholder="Presidente">
+
+<input type="text" placeholder="Vice-Presidente">
+
+<button>
+Cadastrar Chapa
+</button>
+
+</div>
+
+</body>
+</html>
