@@ -1,81 +1,245 @@
-import{
+// ======================================================
+// SISTEMA OFICIAL DAS ELEIÇÕES
+// UMES BREJÕES 2026
+//
+// Arquivo: admin.js
+// Painel Administrativo da Comissão Eleitoral
+// ======================================================
 
+// ======================================================
+// IMPORTS
+// ======================================================
+
+import {
 db,
-
 serverTimestamp
+}
+from "./firebase.js";
+
+import {
+
+collection,
+doc,
+getDoc,
+getDocs,
+setDoc,
+addDoc,
+updateDoc,
+deleteDoc,
+query,
+where,
+orderBy,
+limit
+
+}
+from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+
+// ======================================================
+// VARIÁVEIS GLOBAIS
+// ======================================================
+
+let usuarioAtual = null;
+
+let inscricaoSelecionada = null;
+
+let filtroAtual = "Todas";
+
+let paginaAtual = 1;
+
+const itensPorPagina = 10;
+
+// ======================================================
+// ELEMENTOS DA INTERFACE
+// ======================================================
+
+const listaInscricoes =
+document.getElementById("listaInscricoes");
+
+const pesquisa =
+document.getElementById("pesquisa");
+
+const toast =
+document.getElementById("toast");
+
+const loading =
+document.getElementById("loading");
+
+// Cartões
+
+const totalInscricoes =
+document.getElementById("totalInscricoes");
+
+const totalPendentes =
+document.getElementById("totalPendentes");
+
+const totalHomologadas =
+document.getElementById("totalHomologadas");
+
+const totalIndeferidas =
+document.getElementById("totalIndeferidas");
+
+const totalEleitores =
+document.getElementById("totalEleitores");
+
+const totalVotos =
+document.getElementById("totalVotos");
+
+const statusVotacao =
+document.getElementById("statusVotacao");
+
+const totalComissao =
+document.getElementById("totalComissao");
+
+// ======================================================
+// INICIALIZAÇÃO
+// ======================================================
+
+window.addEventListener(
+
+"load",
+
+async()=>{
+
+mostrarLoading();
+
+try{
+
+await carregarDashboard();
+
+await carregarInscricoes();
+
+await carregarConfiguracoes();
+
+await carregarComissao();
+
+}catch(erro){
+
+console.error(erro);
+
+mostrarToast(
+
+"Erro",
+
+"Não foi possível carregar o painel."
+
+);
 
 }
 
-from "./firebase.js";
+ocultarLoading();
 
-// =========================
-// LOGIN
-// =========================
+}
 
-window.entrar = async function(){
+);
 
-const email =
-document.getElementById("email").value.trim();
+// ======================================================
+// LOADING
+// ======================================================
 
-const senha =
-document.getElementById("senha").value;
+function mostrarLoading(){
 
-if(email === "" || senha === ""){
+loading.classList.add("ativo");
 
-alert("Informe o e-mail e a senha.");
+}
 
-return;
+function ocultarLoading(){
+
+loading.classList.remove("ativo");
+
+}
+
+// ======================================================
+// TOAST
+// ======================================================
+
+function mostrarToast(
+
+titulo,
+
+mensagem
+
+){
+
+document.getElementById(
+
+"toastTitulo"
+
+).innerText = titulo;
+
+document.getElementById(
+
+"toastMensagem"
+
+).innerText = mensagem;
+
+toast.classList.add(
+
+"ativo"
+
+);
+
+setTimeout(()=>{
+
+toast.classList.remove(
+
+"ativo"
+
+);
+
+},4000);
+
+}
+
+// ======================================================
+// FORMATAR DATA
+// ======================================================
+
+function formatarData(data){
+
+if(!data){
+
+return "--";
 
 }
 
 try{
 
-await signInWithEmailAndPassword(
-auth,
-email,
-senha
+return new Date(
+
+data.seconds
+
+?
+
+data.seconds*1000
+
+:
+
+data
+
+).toLocaleString(
+
+"pt-BR"
+
 );
 
-const usuario =
-await getDoc(
-doc(db,"comissao",email)
-);
+}catch{
 
-if(!usuario.exists()){
-
-alert(
-"Acesso não autorizado."
-);
-
-return;
+return "--";
 
 }
 
-document.getElementById("login")
-.style.display = "none";
-
-document.getElementById("painel")
-.style.display = "block";
-
-atualizarPainel();
-
-}catch(error){
-
-console.error(error);
-
-alert(
-"Usuário ou senha inválidos."
-);
-
 }
 
-};
+// ======================================================
+// DASHBOARD
+// ======================================================
 
-// =========================
-// PAINEL
-// =========================
+async function carregarDashboard(){
 
-async function atualizarPainel(){
+const inscricoes =
+await getDocs(
+collection(db,"inscricoes")
+);
 
 const votos =
 await getDocs(
@@ -87,93 +251,1279 @@ await getDocs(
 collection(db,"eleitores")
 );
 
-const chapas =
+const comissao =
 await getDocs(
-collection(db,"chapas")
+collection(db,"comissao")
 );
 
-document.getElementById("totalVotos")
-.innerText =
-votos.size;
+let pendentes = 0;
 
-document.getElementById("totalEleitores")
-.innerText =
+let homologadas = 0;
+
+let indeferidas = 0;
+
+inscricoes.forEach(
+
+(doc)=>{
+
+const status =
+doc.data().status;
+
+if(status==="Pendente"){
+
+pendentes++;
+
+}
+
+if(status==="Homologada"){
+
+homologadas++;
+
+}
+
+if(status==="Indeferida"){
+
+indeferidas++;
+
+}
+
+}
+
+);
+
+totalInscricoes.innerText =
+inscricoes.size;
+
+totalPendentes.innerText =
+pendentes;
+
+totalHomologadas.innerText =
+homologadas;
+
+totalIndeferidas.innerText =
+indeferidas;
+
+totalEleitores.innerText =
 eleitores.size;
 
-document.getElementById("totalChapas")
-.innerText =
-chapas.size;
+totalVotos.innerText =
+votos.size;
 
-const configuracao =
-await getDoc(
-doc(db,"configuracoes","eleicao")
-);
-
-if(configuracao.exists()){
-
-const aberta =
-configuracao.data().aberta;
-
-document.getElementById("status")
-.innerText =
-aberta
-?
-"🟢 VOTAÇÃO ABERTA"
-:
-"🔴 VOTAÇÃO ENCERRADA";
-
-}else{
-
-document.getElementById("status")
-.innerText =
-"⚪ NÃO CONFIGURADA";
+totalComissao.innerText =
+comissao.size;
 
 }
 
-// ADICIONE ESTA LINHA
-await listarChapas();
-  
-}
+// ======================================================
+// INSCRIÇÕES
+// ======================================================
 
-// =========================
-// ABRIR VOTAÇÃO
-// =========================
+let inscricoes = [];
 
-window.abrirVotacao = async function(){
+// ======================================================
+// CARREGAR INSCRIÇÕES
+// ======================================================
+
+async function carregarInscricoes(){
 
 try{
 
-await setDoc(
-doc(db,"configuracoes","eleicao"),
-{
-aberta:true
-},
-{merge:true}
+const consulta = query(
+collection(db,"inscricoes"),
+orderBy("dataHora","desc")
 );
 
-document.getElementById("status").innerText =
-"🟢 VOTAÇÃO ABERTA";
+const snapshot =
+await getDocs(consulta);
 
-alert("A votação foi aberta com sucesso.");
+inscricoes = [];
 
-}catch(error){
+snapshot.forEach((documento)=>{
 
-console.error(error);
+inscricoes.push({
 
-alert("Erro ao abrir a votação.");
+id:documento.id,
+
+...documento.data()
+
+});
+
+});
+
+renderizarTabela();
+
+}catch(erro){
+
+console.error(erro);
+
+mostrarToast(
+
+"Erro",
+
+"Não foi possível carregar as inscrições."
+
+);
 
 }
 
 }
 
-// =========================
-// ENCERRAR VOTAÇÃO
-// =========================
+// ======================================================
+// RENDERIZAR TABELA
+// ======================================================
 
-window.encerrarVotacao = async function(){
+function renderizarTabela(){
 
-const confirmar = confirm(
-"Deseja realmente encerrar a votação?"
+listaInscricoes.innerHTML = "";
+
+let lista = [...inscricoes];
+
+// ----------------------------
+// FILTRO
+// ----------------------------
+
+if(filtroAtual !== "Todas"){
+
+lista = lista.filter(
+
+item => item.status === filtroAtual
+
+);
+
+}
+
+// ----------------------------
+// PESQUISA
+// ----------------------------
+
+const texto =
+
+pesquisa.value
+
+.toLowerCase()
+
+.trim();
+
+if(texto !== ""){
+
+lista = lista.filter((item)=>{
+
+return(
+
+item.numeroInscricao?.toLowerCase().includes(texto)
+
+||
+
+item.chapa?.nome?.toLowerCase().includes(texto)
+
+||
+
+item.presidente?.nome?.toLowerCase().includes(texto)
+
+||
+
+item.vice?.nome?.toLowerCase().includes(texto)
+
+);
+
+});
+
+}
+
+// ----------------------------
+// CONTADORES
+// ----------------------------
+
+document.getElementById(
+
+"contadorFiltro"
+
+).innerText =
+
+lista.length;
+
+document.getElementById(
+
+"contadorInscricoes"
+
+).innerText =
+
+inscricoes.length;
+
+// ----------------------------
+// TABELA VAZIA
+// ----------------------------
+
+if(lista.length===0){
+
+listaInscricoes.innerHTML =
+
+`
+
+<tr>
+
+<td colspan="8">
+
+Nenhuma inscrição encontrada.
+
+</td>
+
+</tr>
+
+`;
+
+return;
+
+}
+
+// ----------------------------
+// LINHAS
+// ----------------------------
+
+lista.forEach((inscricao)=>{
+
+const linha = document.createElement("tr");
+
+linha.innerHTML = `
+
+<td>
+
+${inscricao.numeroInscricao}
+
+</td>
+
+<td>
+
+${inscricao.chapa?.nome || "-"}
+
+</td>
+
+<td>
+
+${inscricao.presidente?.nome || "-"}
+
+</td>
+
+<td>
+
+${inscricao.vice?.nome || "-"}
+
+</td>
+
+<td>
+
+<span class="status status-${(inscricao.status || "").toLowerCase()}">
+
+${inscricao.status}
+
+</span>
+
+</td>
+
+<td>
+
+${formatarData(inscricao.dataHora)}
+
+</td>
+
+<td>
+
+${inscricao.analisadoPor || "-"}
+
+</td>
+
+<td>
+
+<div class="acoes">
+
+<button
+
+class="btn-ver"
+
+onclick="visualizarInscricao('${inscricao.id}')">
+
+👁
+
+</button>
+
+<button
+
+class="btn-homologar"
+
+onclick="abrirHomologacao('${inscricao.id}')">
+
+✔
+
+</button>
+
+<button
+
+class="btn-correcao"
+
+onclick="abrirCorrecao('${inscricao.id}')">
+
+✏
+
+</button>
+
+<button
+
+class="btn-indeferir"
+
+onclick="abrirIndeferimento('${inscricao.id}')">
+
+❌
+
+</button>
+
+<button
+
+class="btn-excluir"
+
+onclick="abrirExclusao('${inscricao.id}')">
+
+🗑
+
+</button>
+
+<button
+
+class="btn-pdf"
+
+onclick="gerarPDF('${inscricao.id}')">
+
+📄
+
+</button>
+
+</div>
+
+</td>
+
+`;
+
+listaInscricoes.appendChild(linha);
+
+});
+
+}
+
+// ======================================================
+// PESQUISA
+// ======================================================
+
+pesquisa.addEventListener(
+
+"input",
+
+()=>{
+
+renderizarTabela();
+
+}
+
+);
+
+// ======================================================
+// FILTROS
+// ======================================================
+
+document
+
+.querySelectorAll(".filtro")
+
+.forEach((botao)=>{
+
+botao.addEventListener(
+
+"click",
+
+()=>{
+
+document
+
+.querySelectorAll(".filtro")
+
+.forEach(
+
+b=>b.classList.remove("ativo")
+
+);
+
+botao.classList.add(
+
+"ativo"
+
+);
+
+filtroAtual =
+
+botao.dataset.status;
+
+renderizarTabela();
+
+}
+
+);
+
+});
+
+// ======================================================
+// SINCRONIZAÇÃO
+// ======================================================
+
+function atualizarSincronizacao(){
+
+document.getElementById(
+
+"ultimaSincronizacao"
+
+).innerText =
+
+new Date()
+
+.toLocaleString(
+
+"pt-BR"
+
+);
+
+}
+
+setInterval(
+
+atualizarSincronizacao,
+
+60000
+
+);
+
+atualizarSincronizacao();
+
+// ======================================================
+// MODAIS
+// ======================================================
+
+const modalVisualizar =
+document.getElementById("modalVisualizar");
+
+const modalHomologar =
+document.getElementById("modalHomologar");
+
+const modalCorrecao =
+document.getElementById("modalCorrecao");
+
+const modalIndeferir =
+document.getElementById("modalIndeferir");
+
+const modalExcluir =
+document.getElementById("modalExcluir");
+
+// ======================================================
+// ABRIR MODAL
+// ======================================================
+
+function abrirModal(modal){
+
+modal.classList.add("ativo");
+
+}
+
+// ======================================================
+// FECHAR MODAL
+// ======================================================
+
+function fecharModal(modal){
+
+modal.classList.remove("ativo");
+
+}
+
+document
+.querySelectorAll(".fecharModal")
+.forEach((botao)=>{
+
+botao.addEventListener(
+
+"click",
+
+()=>{
+
+document
+.querySelectorAll(".modal")
+.forEach((modal)=>{
+
+modal.classList.remove("ativo");
+
+});
+
+}
+
+);
+
+});
+
+// ======================================================
+// VISUALIZAR INSCRIÇÃO
+// ======================================================
+
+window.visualizarInscricao = async function(id){
+
+try{
+
+mostrarLoading();
+
+const documento =
+await getDoc(
+doc(db,"inscricoes",id)
+);
+
+if(!documento.exists()){
+
+mostrarToast(
+
+"Erro",
+
+"Inscrição não encontrada."
+
+);
+
+ocultarLoading();
+
+return;
+
+}
+
+inscricaoSelecionada = id;
+
+const dados =
+documento.data();
+
+document.getElementById(
+
+"conteudoInscricao"
+
+).innerHTML =
+
+`
+
+<h3>
+
+${dados.chapa?.nome || "-"}
+
+</h3>
+
+<hr>
+
+<p>
+
+<strong>
+
+Número:
+
+</strong>
+
+${dados.numeroInscricao}
+
+</p>
+
+<p>
+
+<strong>
+
+Status:
+
+</strong>
+
+${dados.status}
+
+</p>
+
+<hr>
+
+<h4>
+
+Presidente
+
+</h4>
+
+<p>
+
+${dados.presidente?.nome}
+
+</p>
+
+<p>
+
+CPF:
+
+${dados.presidente?.cpf}
+
+</p>
+
+<p>
+
+E-mail:
+
+${dados.presidente?.email}
+
+</p>
+
+<hr>
+
+<h4>
+
+Vice
+
+</h4>
+
+<p>
+
+${dados.vice?.nome}
+
+</p>
+
+<p>
+
+CPF:
+
+${dados.vice?.cpf}
+
+</p>
+
+<p>
+
+E-mail:
+
+${dados.vice?.email}
+
+</p>
+
+<hr>
+
+<h4>
+
+Documentos
+
+</h4>
+
+<p>
+
+<a target="_blank"
+
+href="${dados.documentos.documentoPresidente}">
+
+Documento Presidente
+
+</a>
+
+</p>
+
+<p>
+
+<a target="_blank"
+
+href="${dados.documentos.documentoVice}">
+
+Documento Vice
+
+</a>
+
+</p>
+
+<p>
+
+<a target="_blank"
+
+href="${dados.documentos.declaracao}">
+
+Declaração
+
+</a>
+
+</p>
+
+`;
+
+abrirModal(
+modalVisualizar
+);
+
+ocultarLoading();
+
+}catch(erro){
+
+console.error(erro);
+
+mostrarToast(
+
+"Erro",
+
+"Não foi possível abrir a inscrição."
+
+);
+
+ocultarLoading();
+
+}
+
+}
+
+// ======================================================
+// HOMOLOGAÇÃO
+// ======================================================
+
+window.abrirHomologacao = function(id){
+
+inscricaoSelecionada = id;
+
+abrirModal(
+modalHomologar
+);
+
+}
+
+// ======================================================
+// CORREÇÃO
+// ======================================================
+
+window.abrirCorrecao = function(id){
+
+inscricaoSelecionada = id;
+
+abrirModal(
+modalCorrecao
+);
+
+}
+
+// ======================================================
+// INDEFERIMENTO
+// ======================================================
+
+window.abrirIndeferimento = function(id){
+
+inscricaoSelecionada = id;
+
+abrirModal(
+modalIndeferir
+);
+
+}
+
+// ======================================================
+// EXCLUSÃO
+// ======================================================
+
+window.abrirExclusao = function(id){
+
+inscricaoSelecionada = id;
+
+abrirModal(
+modalExcluir
+);
+
+}
+
+// ======================================================
+// LOGS
+// ======================================================
+
+async function registrarLog(
+
+acao,
+
+referencia,
+
+detalhes
+
+){
+
+await addDoc(
+
+collection(db,"logs"),
+
+{
+
+acao,
+
+referencia,
+
+detalhes,
+
+usuario:
+
+usuarioAtual ||
+
+"Comissão",
+
+dataHora:
+
+serverTimestamp()
+
+}
+
+);
+
+}
+
+document
+.getElementById("confirmarHomologacao")
+.addEventListener(
+
+"click",
+
+async()=>{
+
+if(!inscricaoSelecionada){
+
+return;
+
+}
+
+try{
+
+mostrarLoading();
+
+const numeroChapa =
+document
+.getElementById("numeroChapaHomologada")
+.value;
+
+const observacao =
+document
+.getElementById("observacaoHomologacao")
+.value;
+
+await updateDoc(
+
+doc(db,"inscricoes",inscricaoSelecionada),
+
+{
+
+status:"Homologada",
+
+numeroChapa,
+
+observacaoHomologacao:observacao,
+
+analisadoPor:
+usuarioAtual || "Comissão",
+
+dataHomologacao:
+serverTimestamp()
+
+}
+
+);
+
+await registrarLog(
+
+"Homologação",
+
+inscricaoSelecionada,
+
+"Inscrição homologada."
+
+);
+
+fecharModal(
+modalHomologar
+);
+
+await carregarDashboard();
+
+await carregarInscricoes();
+
+mostrarToast(
+
+"Sucesso",
+
+"Inscrição homologada."
+
+);
+
+ocultarLoading();
+
+}catch(erro){
+
+console.error(erro);
+
+mostrarToast(
+
+"Erro",
+
+"Não foi possível homologar."
+
+);
+
+ocultarLoading();
+
+}
+
+});
+
+document
+.getElementById("confirmarCorrecao")
+.addEventListener(
+
+"click",
+
+async()=>{
+
+const texto =
+
+document
+.getElementById("textoCorrecao")
+.value;
+
+if(texto===""){
+
+alert(
+
+"Informe o motivo."
+
+);
+
+return;
+
+}
+
+try{
+
+mostrarLoading();
+
+await updateDoc(
+
+doc(db,"inscricoes",inscricaoSelecionada),
+
+{
+
+status:"Correção Solicitada",
+
+motivoCorrecao:texto,
+
+analisadoPor:
+usuarioAtual,
+
+ultimaAtualizacao:
+serverTimestamp()
+
+}
+
+);
+
+await registrarLog(
+
+"Correção",
+
+inscricaoSelecionada,
+
+texto
+
+);
+
+fecharModal(
+modalCorrecao
+);
+
+await carregarDashboard();
+
+await carregarInscricoes();
+
+mostrarToast(
+
+"Sucesso",
+
+"Correção solicitada."
+
+);
+
+ocultarLoading();
+
+}catch(erro){
+
+console.error(erro);
+
+ocultarLoading();
+
+}
+
+});
+
+document
+.getElementById("confirmarIndeferimento")
+.addEventListener(
+
+"click",
+
+async()=>{
+
+const motivo =
+
+document
+.getElementById("motivoIndeferimento")
+.value;
+
+if(motivo===""){
+
+alert(
+
+"Informe o motivo."
+
+);
+
+return;
+
+}
+
+try{
+
+mostrarLoading();
+
+await updateDoc(
+
+doc(db,"inscricoes",inscricaoSelecionada),
+
+{
+
+status:"Indeferida",
+
+motivoIndeferimento:motivo,
+
+analisadoPor:
+usuarioAtual,
+
+dataIndeferimento:
+serverTimestamp()
+
+}
+
+);
+
+await registrarLog(
+
+"Indeferimento",
+
+inscricaoSelecionada,
+
+motivo
+
+);
+
+fecharModal(
+modalIndeferir
+);
+
+await carregarDashboard();
+
+await carregarInscricoes();
+
+mostrarToast(
+
+"Sucesso",
+
+"Inscrição indeferida."
+
+);
+
+ocultarLoading();
+
+}catch(erro){
+
+console.error(erro);
+
+ocultarLoading();
+
+}
+
+});
+
+document
+.getElementById("confirmarExclusao")
+.addEventListener(
+
+"click",
+
+async()=>{
+
+try{
+
+mostrarLoading();
+
+const documento =
+await getDoc(
+doc(db,"inscricoes",inscricaoSelecionada)
+);
+
+if(!documento.exists()){
+
+return;
+
+}
+
+await setDoc(
+
+doc(
+
+db,
+
+"lixeira",
+
+inscricaoSelecionada
+
+),
+
+{
+
+...documento.data(),
+
+dataExclusao:
+serverTimestamp()
+
+}
+
+);
+
+await deleteDoc(
+
+doc(
+
+db,
+
+"inscricoes",
+
+inscricaoSelecionada
+
+)
+
+);
+
+await registrarLog(
+
+"Lixeira",
+
+inscricaoSelecionada,
+
+"Inscrição enviada para a lixeira."
+
+);
+
+fecharModal(
+modalExcluir
+);
+
+await carregarDashboard();
+
+await carregarInscricoes();
+
+mostrarToast(
+
+"Sucesso",
+
+"Inscrição enviada para a lixeira."
+
+);
+
+ocultarLoading();
+
+}catch(erro){
+
+console.error(erro);
+
+ocultarLoading();
+
+}
+
+});
+
+// ======================================================
+// RESTAURAR INSCRIÇÃO
+// ======================================================
+
+window.restaurarInscricao = async function(id){
+
+try{
+
+mostrarLoading();
+
+const documento =
+await getDoc(
+doc(db,"lixeira",id)
+);
+
+if(!documento.exists()){
+
+mostrarToast(
+"Erro",
+"Inscrição não encontrada."
+);
+
+ocultarLoading();
+
+return;
+
+}
+
+await setDoc(
+
+doc(db,"inscricoes",id),
+
+documento.data()
+
+);
+
+await deleteDoc(
+
+doc(db,"lixeira",id)
+
+);
+
+await registrarLog(
+
+"Restauração",
+
+id,
+
+"Inscrição restaurada da lixeira."
+
+);
+
+await carregarDashboard();
+
+await carregarInscricoes();
+
+mostrarToast(
+
+"Sucesso",
+
+"Inscrição restaurada."
+
+);
+
+ocultarLoading();
+
+}catch(erro){
+
+console.error(erro);
+
+ocultarLoading();
+
+}
+
+}
+
+// ======================================================
+// EXCLUSÃO DEFINITIVA
+// ======================================================
+
+window.excluirPermanentemente = async function(id){
+
+const confirmar =
+confirm(
+
+"Esta ação é irreversível.\n\nDeseja excluir definitivamente?"
+
 );
 
 if(!confirmar){
@@ -184,161 +1534,292 @@ return;
 
 try{
 
-await setDoc(
-doc(db,"configuracoes","eleicao"),
-{
-aberta:false
-},
-{merge:true}
+mostrarLoading();
+
+await deleteDoc(
+
+doc(db,"lixeira",id)
+
 );
 
-document.getElementById("status").innerText =
-"🔴 VOTAÇÃO ENCERRADA";
+await registrarLog(
 
-alert("A votação foi encerrada.");
+"Exclusão Permanente",
 
-}catch(error){
+id,
 
-console.error(error);
+"Registro removido definitivamente."
 
-alert("Erro ao encerrar a votação.");
+);
+
+mostrarToast(
+
+"Sucesso",
+
+"Registro excluído."
+
+);
+
+ocultarLoading();
+
+}catch(erro){
+
+console.error(erro);
+
+ocultarLoading();
 
 }
 
 }
 
-// =========================
-// CADASTRAR CHAPA
-// =========================
+// ======================================================
+// PDF DA INSCRIÇÃO
+// ======================================================
 
-window.salvarChapa = async function(){
+window.gerarPDF = async function(id){
 
-const numero =
-document.getElementById("numero").value.trim();
+const documento =
+await getDoc(
+doc(db,"inscricoes",id)
+);
 
-const nome =
-document.getElementById("nomeChapa").value.trim();
+if(!documento.exists()){
 
-const presidente =
-document.getElementById("presidente").value.trim();
-
-const vice =
-document.getElementById("vice").value.trim();
-
-if(
-numero==="" ||
-nome==="" ||
-presidente==="" ||
-vice===""){
-alert("Preencha todos os campos.");
 return;
-}
-
-try{
-
-await addDoc(
-collection(db,"chapas"),
-{
-
-numero:Number(numero),
-
-nome,
-
-presidente,
-
-vice,
-
-status:"Homologada",
-
-criadaEm:new Date()
 
 }
-
-);
-
-alert("Chapa cadastrada com sucesso.");
-
-document.getElementById("numero").value="";
-document.getElementById("nomeChapa").value="";
-document.getElementById("presidente").value="";
-document.getElementById("vice").value="";
-
-listarChapas();
-
-atualizarPainel();
-
-}catch(error){
-
-console.error(error);
-
-alert(error.code + "\n\n" + error.message);
-
-}
-
-}
-
-// =========================
-// LISTAR CHAPAS
-// =========================
-
-async function listarChapas(){
-
-const lista =
-document.getElementById("listaChapas");
-
-lista.innerHTML="";
-
-const snapshot =
-await getDocs(
-collection(db,"chapas")
-);
-
-snapshot.forEach((documento)=>{
 
 const dados =
 documento.data();
 
-lista.innerHTML += `
+const { jsPDF } = window.jspdf;
 
-<div class="chapa-card">
+const pdf =
+new jsPDF();
 
-<h3>
+pdf.setFontSize(18);
 
-Chapa ${dados.numero}
+pdf.text(
 
-</h3>
+"UMES BREJÕES",
 
-<p>
+20,
 
-<strong>${dados.nome}</strong>
+20
 
-</p>
+);
 
-<p>
+pdf.setFontSize(12);
 
-Presidente:
-${dados.presidente}
+pdf.text(
 
-</p>
+"INSCRIÇÃO DE CHAPA",
 
-<p>
+20,
 
-Vice:
-${dados.vice}
+30
 
-</p>
+);
 
-<p>
+pdf.text(
 
-Status:
-${dados.status}
+"Número: " +
+dados.numeroInscricao,
 
-</p>
+20,
 
-</div>
+45
 
-`;
+);
+
+pdf.text(
+
+"Status: " +
+dados.status,
+
+20,
+
+55
+
+);
+
+pdf.text(
+
+"Chapa: " +
+dados.chapa.nome,
+
+20,
+
+65
+
+);
+
+pdf.text(
+
+"Presidente: " +
+dados.presidente.nome,
+
+20,
+
+75
+
+);
+
+pdf.text(
+
+"Vice: " +
+dados.vice.nome,
+
+20,
+
+85
+
+);
+
+pdf.save(
+
+dados.numeroInscricao + ".pdf"
+
+);
+
+}
+
+// ======================================================
+// ATA DE HOMOLOGAÇÃO
+// ======================================================
+
+window.gerarAtaHomologacao =
+async function(){
+
+const snapshot =
+await getDocs(
+collection(db,"inscricoes")
+);
+
+const { jsPDF } =
+window.jspdf;
+
+const pdf =
+new jsPDF();
+
+let y = 20;
+
+pdf.setFontSize(18);
+
+pdf.text(
+
+"ATA DE HOMOLOGAÇÃO",
+
+20,
+
+y
+
+);
+
+y += 15;
+
+snapshot.forEach((doc)=>{
+
+const dados =
+doc.data();
+
+if(dados.status==="Homologada"){
+
+pdf.text(
+
+dados.numeroInscricao +
+
+" - " +
+
+dados.chapa.nome,
+
+20,
+
+y
+
+);
+
+y += 10;
+
+}
 
 });
+
+pdf.save(
+
+"Ata-Homologacao.pdf"
+
+);
+
+}
+
+// ======================================================
+// RELATÓRIO DE AUDITORIA
+// ======================================================
+
+window.gerarRelatorioAuditoria =
+async function(){
+
+const logs =
+await getDocs(
+collection(db,"logs")
+);
+
+const { jsPDF } =
+window.jspdf;
+
+const pdf =
+new jsPDF();
+
+let y = 20;
+
+pdf.setFontSize(18);
+
+pdf.text(
+
+"RELATÓRIO DE AUDITORIA",
+
+20,
+
+20
+
+);
+
+y += 15;
+
+logs.forEach((doc)=>{
+
+const log =
+doc.data();
+
+pdf.setFontSize(10);
+
+pdf.text(
+
+`${log.acao} - ${log.referencia}`,
+
+20,
+
+y
+
+);
+
+y += 8;
+
+if(y > 270){
+
+pdf.addPage();
+
+y = 20;
+
+}
+
+});
+
+pdf.save(
+
+"Relatorio-Auditoria.pdf"
+
+);
 
 }
