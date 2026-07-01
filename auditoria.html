@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Auditoria da Eleição | UMES Brejões</title>
+
+<style>
+
+body{
+font-family:Arial,sans-serif;
+background:#f4f6f9;
+padding:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:10px;
+box-shadow:0 0 10px rgba(0,0,0,.1);
+}
+
+h1{
+color:#003366;
+text-align:center;
+}
+
+.card{
+background:#eef5ff;
+padding:20px;
+margin-top:15px;
+border-radius:8px;
+border-left:5px solid #003366;
+}
+
+.numero{
+font-size:2rem;
+font-weight:bold;
+color:#003366;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Painel de Auditoria</h1>
+
+<div class="card">
+Total de votos registrados
+<div class="numero" id="totalVotos">0</div>
+</div>
+
+<div class="card">
+Total de eleitores registrados
+<div class="numero" id="totalEleitores">0</div>
+</div>
+
+<div class="card">
+Primeiro voto registrado
+<div class="numero" id="primeiroVoto">--</div>
+</div>
+
+<div class="card">
+Último voto registrado
+<div class="numero" id="ultimoVoto">--</div>
+</div>
+
+</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+
+import {
+getFirestore,
+collection,
+getDocs
+}
+from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+
+const firebaseConfig = {
+
+apiKey: "SUA_API_KEY",
+authDomain: "umes-brejoes-eleicoes-2026.firebaseapp.com",
+projectId: "umes-brejoes-eleicoes-2026",
+storageBucket: "umes-brejoes-eleicoes-2026.firebasestorage.app",
+messagingSenderId: "406100216755",
+appId: "1:406100216755:web:f994e5e2d386a2e97ed9c6"
+
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+async function carregarAuditoria(){
+
+const votosSnap =
+await getDocs(collection(db,"votos"));
+
+const eleitoresSnap =
+await getDocs(collection(db,"eleitores"));
+
+document.getElementById("totalVotos")
+.innerText = votosSnap.size;
+
+document.getElementById("totalEleitores")
+.innerText = eleitoresSnap.size;
+
+let datas = [];
+
+votosSnap.forEach(doc => {
+
+const dados = doc.data();
+
+if(dados.dataHora){
+
+if(typeof dados.dataHora.toDate === "function"){
+
+datas.push(
+dados.dataHora.toDate()
+);
+
+}
+
+}
+
+});
+
+if(datas.length > 0){
+
+datas.sort((a,b)=>a-b);
+
+document.getElementById("primeiroVoto")
+.innerText =
+datas[0].toLocaleString("pt-BR");
+
+document.getElementById("ultimoVoto")
+.innerText =
+datas[datas.length-1]
+.toLocaleString("pt-BR");
+
+}
+
+}
+
+carregarAuditoria();
+
+</script>
+
+</body>
+</html>
