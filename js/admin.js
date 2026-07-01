@@ -5,13 +5,15 @@ import {
   signInWithEmailAndPassword
 } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
 
-import {
-  getFirestore,
-  collection,
-  getDocs,
-  doc,
-  getDoc,
-  setDoc
+import{
+getFirestore,
+collection,
+getDocs,
+doc,
+getDoc,
+setDoc,
+addDoc,
+deleteDoc
 }
 from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
@@ -159,6 +161,9 @@ document.getElementById("status")
 
 }
 
+// ADICIONE ESTA LINHA
+await listarChapas();
+  
 }
 
 // =========================
@@ -230,5 +235,141 @@ console.error(error);
 alert("Erro ao encerrar a votação.");
 
 }
+
+}
+
+// =========================
+// CADASTRAR CHAPA
+// =========================
+
+window.salvarChapa = async function(){
+
+const numero =
+document.getElementById("numero").value.trim();
+
+const nome =
+document.getElementById("nomeChapa").value.trim();
+
+const presidente =
+document.getElementById("presidente").value.trim();
+
+const vice =
+document.getElementById("vice").value.trim();
+
+if(
+numero==="" ||
+nome==="" ||
+presidente==="" ||
+vice===""){
+alert("Preencha todos os campos.");
+return;
+}
+
+try{
+
+await addDoc(
+collection(db,"chapas"),
+{
+
+numero:Number(numero),
+
+nome,
+
+presidente,
+
+vice,
+
+status:"Homologada",
+
+criadaEm:new Date()
+
+}
+
+);
+
+alert("Chapa cadastrada com sucesso.");
+
+document.getElementById("numero").value="";
+document.getElementById("nomeChapa").value="";
+document.getElementById("presidente").value="";
+document.getElementById("vice").value="";
+
+listarChapas();
+
+atualizarPainel();
+
+}catch(error){
+
+console.error(error);
+
+alert("Erro ao cadastrar chapa.");
+
+}
+
+}
+
+// =========================
+// LISTAR CHAPAS
+// =========================
+
+async function listarChapas(){
+
+const lista =
+document.getElementById("listaChapas");
+
+lista.innerHTML="";
+
+const snapshot =
+await getDocs(
+collection(db,"chapas")
+);
+
+snapshot.forEach((documento)=>{
+
+const dados =
+documento.data();
+
+lista.innerHTML += `
+
+<div class="chapa-card">
+
+<h3>
+
+Chapa ${dados.numero}
+
+</h3>
+
+<p>
+
+<strong>${dados.nome}</strong>
+
+</p>
+
+<p>
+
+Presidente:
+${dados.presidente}
+
+</p>
+
+<p>
+
+Vice:
+${dados.vice}
+
+</p>
+
+<p>
+
+Status:
+${dados.status}
+
+</p>
+
+</div>
+
+`;
+
+});
 
 }
