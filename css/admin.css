@@ -1,203 +1,337 @@
+/* ==========================================================
+   SISTEMA OFICIAL DAS ELEIÇÕES
+   UMES BREJÕES 2026
+   Arquivo: admin.css
+========================================================== */
+
+/* ==========================
+   RESET
+========================== */
+
 *{
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:'Segoe UI',sans-serif;
+}
+
+html{
+
+scroll-behavior:smooth;
+
 }
 
 body{
-background:#f4f7fb;
-color:#2d3748;
+
+font-family:"Inter",sans-serif;
+
+background:#f4f6f9;
+
+color:#1f2937;
+
+overflow-x:hidden;
+
 }
 
-#login{
+/* ==========================
+   VARIÁVEIS
+========================== */
+
+:root{
+
+--azul:#003366;
+
+--azul-claro:#0d6efd;
+
+--verde:#198754;
+
+--vermelho:#dc3545;
+
+--amarelo:#ffc107;
+
+--roxo:#6f42c1;
+
+--cinza:#6c757d;
+
+--cinza-claro:#f8f9fa;
+
+--branco:#ffffff;
+
+--sombra:
+
+0 10px 25px rgba(0,0,0,.08);
+
+--borda:
+
+1px solid #e5e7eb;
+
+--radius:14px;
+
+}
+
+/* ==========================
+   LAYOUT
+========================== */
+
+.layout{
+
 display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
-background:linear-gradient(135deg,#0d47a1,#1565c0);
+
+min-height:100vh;
+
 }
 
-.login-box{
-background:#fff;
-padding:40px;
-border-radius:18px;
-width:400px;
-text-align:center;
-box-shadow:0 10px 30px rgba(0,0,0,.15);
+/* ==========================
+   MENU LATERAL
+========================== */
+
+.sidebar{
+
+width:260px;
+
+background:var(--azul);
+
+color:white;
+
+display:flex;
+
+flex-direction:column;
+
+position:fixed;
+
+left:0;
+
+top:0;
+
+bottom:0;
+
+overflow-y:auto;
+
 }
 
 .logo{
-width:120px;
-margin-bottom:20px;
-}
 
-.login-box h1{
-color:#0d47a1;
-margin-bottom:10px;
-}
-
-.login-box p{
-color:#666;
-margin-bottom:25px;
-}
-
-.login-box input{
-width:100%;
-padding:14px;
-margin-bottom:15px;
-border:1px solid #ddd;
-border-radius:10px;
-font-size:15px;
-}
-
-.login-box button{
-width:100%;
-padding:14px;
-background:#0d47a1;
-color:#fff;
-border:none;
-border-radius:10px;
-cursor:pointer;
-font-size:16px;
-font-weight:bold;
-transition:.3s;
-}
-
-.login-box button:hover{
-background:#1565c0;
-}
-
-#painel{
-display:none;
 padding:30px;
+
+text-align:center;
+
+border-bottom:
+
+1px solid rgba(255,255,255,.12);
+
 }
 
-header{
+.logo h2{
+
+font-size:28px;
+
+font-weight:700;
+
+}
+
+.logo p{
+
+margin-top:6px;
+
+font-size:14px;
+
+opacity:.8;
+
+}
+
+.sidebar nav{
+
+padding:20px 0;
+
+}
+
+.sidebar ul{
+
+list-style:none;
+
+}
+
+.sidebar li{
+
+margin:4px 12px;
+
+}
+
+.sidebar a{
+
 display:flex;
+
 align-items:center;
-gap:20px;
-margin-bottom:30px;
-}
 
-.logo-header{
-width:90px;
-}
+gap:14px;
 
-header h1{
-color:#0d47a1;
-}
+padding:14px 18px;
 
-.cards{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:20px;
-margin-bottom:30px;
-}
-
-.card{
-background:#fff;
-padding:25px;
-border-radius:15px;
-box-shadow:0 5px 15px rgba(0,0,0,.08);
-}
-
-.card h2{
-font-size:18px;
-margin-bottom:15px;
-color:#0d47a1;
-}
-
-.card span{
-font-size:30px;
-font-weight:bold;
-}
-
-.botoes{
-display:flex;
-flex-wrap:wrap;
-gap:15px;
-margin-bottom:30px;
-}
-
-.botoes button{
-padding:14px 20px;
-border:none;
-border-radius:10px;
-background:#0d47a1;
-color:#fff;
-cursor:pointer;
-font-size:15px;
-transition:.3s;
-}
-
-.botoes button:hover{
-background:#1565c0;
-}
-
-.cadastro{
-background:#fff;
-padding:25px;
-border-radius:15px;
-box-shadow:0 5px 15px rgba(0,0,0,.08);
-margin-bottom:30px;
-}
-
-.cadastro h2{
-margin-bottom:20px;
-color:#0d47a1;
-}
-
-.cadastro input{
-width:100%;
-padding:12px;
-margin-bottom:15px;
-border:1px solid #ddd;
-border-radius:8px;
-}
-
-.cadastro button{
-padding:14px 20px;
-background:#0d47a1;
 color:white;
-border:none;
-border-radius:10px;
-cursor:pointer;
-}
 
-#listaChapas{
-display:grid;
-gap:15px;
-margin-top:20px;
-}
+text-decoration:none;
 
-.chapa-card{
-background:white;
-padding:20px;
 border-radius:12px;
-box-shadow:0 3px 10px rgba(0,0,0,.08);
+
+transition:.25s;
+
 }
 
-footer{
-margin-top:40px;
-text-align:center;
-color:#777;
-padding:20px;
+.sidebar a:hover{
+
+background:rgba(255,255,255,.12);
+
 }
 
-@media(max-width:768px){
+.sidebar li.ativo a{
 
-header{
+background:white;
+
+color:var(--azul);
+
+font-weight:600;
+
+}
+
+/* ==========================
+   ÁREA PRINCIPAL
+========================== */
+
+.conteudo{
+
+margin-left:260px;
+
+width:calc(100% - 260px);
+
+display:flex;
+
 flex-direction:column;
-text-align:center;
+
+min-height:100vh;
+
 }
 
-.botoes{
-flex-direction:column;
+/* ==========================
+   CABEÇALHO
+========================== */
+
+.topo{
+
+background:white;
+
+padding:20px 35px;
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+position:sticky;
+
+top:0;
+
+z-index:100;
+
+box-shadow:
+
+0 3px 12px rgba(0,0,0,.05);
+
 }
 
-.botoes button{
-width:100%;
+.topo h1{
+
+font-size:28px;
+
+color:var(--azul);
+
 }
+
+.topo p{
+
+margin-top:5px;
+
+font-size:14px;
+
+color:#666;
+
+}
+
+.usuario{
+
+display:flex;
+
+align-items:center;
+
+gap:18px;
+
+}
+
+.usuario strong{
+
+font-size:16px;
+
+}
+
+.usuario small{
+
+color:#666;
+
+}
+
+#btnSair{
+
+background:var(--vermelho);
+
+color:white;
+
+border:none;
+
+padding:12px 18px;
+
+border-radius:10px;
+
+cursor:pointer;
+
+transition:.25s;
+
+}
+
+#btnSair:hover{
+
+opacity:.9;
+
+}
+
+/* ==========================
+   MAIN
+========================== */
+
+main{
+
+padding:35px;
+
+}
+
+.pagina{
+
+margin-bottom:40px;
+
+}
+
+.pagina h2{
+
+font-size:26px;
+
+color:var(--azul);
+
+margin-bottom:8px;
+
+}
+
+.pagina p{
+
+color:#666;
+
+margin-bottom:25px;
 
 }
