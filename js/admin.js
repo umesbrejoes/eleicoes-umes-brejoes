@@ -302,7 +302,7 @@ atualizarPainel();
 
 console.error(error);
 
-alert("Erro ao cadastrar chapa.");
+alert(error.code + "\n\n" + error.message);
 
 }
 
