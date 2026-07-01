@@ -16,10 +16,6 @@ where,
 serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
-import {
-getStorage
-} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-storage.js";
-
 // =========================
 // FIREBASE
 // =========================
@@ -31,15 +27,37 @@ authDomain: "umes-brejoes-eleicoes-2026.firebaseapp.com",
 projectId: "umes-brejoes-eleicoes-2026",
 storageBucket: "umes-brejoes-eleicoes-2026.firebasestorage.app",
 messagingSenderId: "406100216755",
-appId: "1:406100216755:web:f994e5e2d386a2e97ed9c6"
+appId: "1:406100216755:web:f994e5e2d386a2e97ed9c6",
 measurementId: "G-F5EWF15PVY"
-};
-
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-const storage = getStorage(app);
+
+async function uploadArquivo(file){
+
+  const formData = new FormData();
+
+  formData.append("file", file);
+  formData.append("upload_preset", "umes-eleicoes");
+
+  const resposta = await fetch(
+    "https://api.cloudinary.com/v1_1/ysol6tp1/auto/upload",
+    {
+      method: "POST",
+      body: formData
+    }
+  );
+
+  if(!resposta.ok){
+    throw new Error("Erro ao enviar arquivo.");
+  }
+
+  const dados = await resposta.json();
+
+  return dados.secure_url;
+
+}
 
 // =========================
 // PERÍODO DE INSCRIÇÃO
@@ -447,6 +465,31 @@ return null;
 
 }
 
+const urlDocumentoPresidente =
+await uploadArquivo(documentos.documentoPresidente);
+
+const urlDocumentoVice =
+await uploadArquivo(documentos.documentoVice);
+
+const urlCPF =
+documentos.cpf
+? await uploadArquivo(documentos.cpf)
+: "";
+
+const urlMatriculaPresidente =
+await uploadArquivo(documentos.matriculaPresidente);
+
+const urlMatriculaVice =
+await uploadArquivo(documentos.matriculaVice);
+
+const urlDeclaracao =
+await uploadArquivo(documentos.declaracao);
+
+const urlPlano =
+documentos.plano
+? await uploadArquivo(documentos.plano)
+: "";
+  
 // =========================
 // DADOS FINAIS
 // =========================
@@ -471,7 +514,15 @@ presidente,
 
 vice,
 
-documentos,
+documentos: {
+    documentoPresidente: urlDocumentoPresidente,
+    documentoVice: urlDocumentoVice,
+    cpf: urlCPF,
+    matriculaPresidente: urlMatriculaPresidente,
+    matriculaVice: urlMatriculaVice,
+    declaracao: urlDeclaracao,
+    plano: urlPlano
+},
 
 historico:
 criarHistoricoInicial(),
@@ -486,3 +537,42 @@ valor("observacoes")
 
 }
 
+// =========================
+// ENVIO DA INSCRIÇÃO
+// =========================
+
+const formulario = document.getElementById("formInscricao");
+
+formulario.addEventListener("submit", async (e) => {
+
+  e.preventDefault();
+
+  try {
+
+    const dados = await prepararDadosInscricao();
+
+    if (!dados) return;
+
+    await setDoc(
+      doc(db, "inscricoes", dados.numeroInscricao),
+      dados
+    );
+
+    alert(
+      "Inscrição realizada com sucesso!\n\nNúmero da inscrição: " +
+      dados.numeroInscricao
+    );
+
+    formulario.reset();
+
+  } catch (erro) {
+
+    console.error(erro);
+
+    alert(
+      "Erro ao realizar a inscrição. Tente novamente."
+    );
+
+  }
+
+});
