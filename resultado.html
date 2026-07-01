@@ -137,11 +137,25 @@ document.getElementById("senha").value;
 
 try{
 
+const credencial =
 await signInWithEmailAndPassword(
 auth,
 email,
 senha
 );
+
+const consulta =
+await getDoc(
+doc(db,"comissao",email)
+);
+
+if(!consulta.exists()){
+
+alert("Acesso não autorizado.");
+
+return;
+
+}
 
 document.getElementById("login").style.display="none";
 
