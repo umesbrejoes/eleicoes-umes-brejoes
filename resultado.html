@@ -163,9 +163,11 @@ document.getElementById("painel").style.display="block";
 
 carregarResultados();
 
-}catch{
+}catch(error){
 
-alert("Usuário ou senha inválidos.");
+console.error(error);
+
+alert(error.message);
 
 }
 
