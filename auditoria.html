@@ -52,6 +52,20 @@ color:#003366;
 
 <h1>Painel de Auditoria</h1>
 
+<div id="login">
+
+<input type="email" id="email" placeholder="E-mail">
+
+<input type="password" id="senha" placeholder="Senha">
+
+<button onclick="entrar()">
+Entrar
+</button>
+
+</div>
+
+<div id="painel" style="display:none">
+  
 <div class="card">
 Total de votos registrados
 <div class="numero" id="totalVotos">0</div>
@@ -81,9 +95,17 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebas
 import {
 getFirestore,
 collection,
-getDocs
+getDocs,
+doc,
+getDoc
 }
 from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+
+import {
+getAuth,
+signInWithEmailAndPassword
+}
+from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
 
 const firebaseConfig = {
 
@@ -98,7 +120,60 @@ appId: "1:406100216755:web:f994e5e2d386a2e97ed9c6"
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+  const auth = getAuth(app);
 
+window.entrar = async function(){
+
+const email =
+document.getElementById("email").value;
+
+const senha =
+document.getElementById("senha").value;
+
+try{
+
+const credencial =
+await signInWithEmailAndPassword(
+auth,
+email,
+senha
+);
+
+const consulta =
+await getDoc(
+doc(db,"comissao",email)
+);
+
+if(!consulta.exists()){
+
+alert(
+"Acesso não autorizado."
+);
+
+return;
+
+}
+
+document.getElementById("login")
+.style.display = "none";
+
+document.getElementById("painel")
+.style.display = "block";
+
+carregarAuditoria();
+
+}catch(error){
+
+console.error(error);
+
+alert(
+"Usuário ou senha inválidos."
+);
+
+}
+
+}
+  
 async function carregarAuditoria(){
 
 const votosSnap =
@@ -150,9 +225,8 @@ datas[datas.length-1]
 
 }
 
-carregarAuditoria();
-
 </script>
 
+</div>
 </body>
 </html>
