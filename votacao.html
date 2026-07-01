@@ -124,26 +124,7 @@ Período de votação: das 06h do dia 25 de julho de 2026 até às 22h do dia 26
 
 <h2>Urna Eletrônica</h2>
 
-<div class="chapa">
-<label>
-<input type="radio" name="voto" value="Chapa 01">
-CHAPA 01 – AVANÇAR ESTUDANTES
-</label>
-</div>
-
-<div class="chapa">
-<label>
-<input type="radio" name="voto" value="Chapa 02">
-CHAPA 02 – JUVENTUDE EM AÇÃO
-</label>
-</div>
-
-<div class="chapa">
-<label>
-<input type="radio" name="voto" value="Branco">
-VOTO EM BRANCO
-</label>
-</div>
+<div id="listaChapas"></div>
 
 <p class="aviso">
 Todos os campos são obrigatórios.
@@ -164,10 +145,10 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebas
 import {
 getFirestore,
 collection,
+getDocs,
 addDoc,
 query,
 where,
-getDocs,
 doc,
 getDoc,
 setDoc
@@ -186,7 +167,87 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+const db = getFirestore(app);
+
+async function carregarChapas(){
+
+const lista =
+document.getElementById("listaChapas");
+
+lista.innerHTML = "";
+
+const snapshot =
+await getDocs(
+collection(db,"chapas")
+);
+
+snapshot.forEach((documento)=>{
+
+const dados = documento.data();
+
+if(dados.status === "Homologada"){
+
+lista.innerHTML += `
+
+<div class="chapa">
+
+<label>
+
+<input
+type="radio"
+name="voto"
+value="Chapa ${dados.numero}">
+
+<strong>
+CHAPA ${dados.numero}
+</strong>
+
+<br>
+
+${dados.nome}
+
+<br>
+
+Presidente: ${dados.presidente}
+
+<br>
+
+Vice-Presidente: ${dados.vice}
+
+</label>
+
+</div>
+
+`;
+
+}
+
+});
+
+lista.innerHTML += `
+
+<div class="chapa">
+
+<label>
+
+<input
+type="radio"
+name="voto"
+value="Branco">
+
+VOTO EM BRANCO
+
+</label>
+
+</div>
+
+`;
+
+}
+
+carregarChapas();
+
+window.registrarVoto = async function(){
 
 window.registrarVoto = async function(){
 
