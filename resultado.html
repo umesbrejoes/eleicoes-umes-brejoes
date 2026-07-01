@@ -82,10 +82,194 @@ Total:
 <span id="total">0</span>
 </div>
 
+<button onclick="gerarAtaPDF()">
+📄 Gerar Ata Oficial em PDF
+</button>
+  
 </div>
 
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+window.gerarAtaPDF = async function(){
+
+const { jsPDF } = window.jspdf;
+
+const pdf = new jsPDF();
+
+const logoUrl =
+"https://raw.githubusercontent.com/umesbrejoes/eleicoes-umes-brejoes/principal/imagens/imagens/logo-umes.png";
+
+const resposta = await fetch(logoUrl);
+const blob = await resposta.blob();
+
+const reader = new FileReader();
+
+reader.onloadend = function(){
+
+const logoBase64 = reader.result;
+
+pdf.addImage(
+logoBase64,
+"PNG",
+80,
+10,
+50,
+50
+);
+
+pdf.setFontSize(14);
+
+pdf.text(
+"UNIÃO MUNICIPAL DOS E DAS ESTUDANTES DE BREJÕES",
+105,
+70,
+{align:"center"}
+);
+
+pdf.text(
+"ATA OFICIAL DE APURAÇÃO DAS ELEIÇÕES 2026",
+105,
+80,
+{align:"center"}
+);
+
+const chapa1 =
+document.getElementById("chapa1").innerText;
+
+const chapa2 =
+document.getElementById("chapa2").innerText;
+
+const brancos =
+document.getElementById("brancos").innerText;
+
+const total =
+document.getElementById("total").innerText;
+
+let y = 100;
+
+pdf.setFontSize(12);
+
+pdf.text("RESULTADO OFICIAL",20,y);
+
+y += 15;
+
+pdf.text(
+`CHAPA 01: ${chapa1} votos`,
+20,
+y
+);
+
+y += 10;
+
+pdf.text(
+`CHAPA 02: ${chapa2} votos`,
+20,
+y
+);
+
+y += 10;
+
+pdf.text(
+`Votos em Branco: ${brancos}`,
+20,
+y
+);
+
+y += 10;
+
+pdf.text(
+`Total de Votos: ${total}`,
+20,
+y
+);
+
+y += 20;
+
+pdf.text(
+"TERMO DE HOMOLOGAÇÃO",
+20,
+y
+);
+
+y += 10;
+
+pdf.text(
+"Aos 26 dias do mês de julho de 2026, encerrado o processo eleitoral da União Municipal dos e das Estudantes de Brejões - UMES Brejões, a Comissão Eleitoral procedeu à apuração dos votos registrados no sistema eletrônico oficial, constatando os resultados acima descritos. Não havendo irregularidades que comprometam a legitimidade do pleito, fica homologado o resultado da eleição.",
+20,
+y,
+{
+maxWidth:170
+}
+);
+
+y += 45;
+
+pdf.text(
+"COMISSÃO ELEITORAL",
+20,
+y
+);
+
+y += 15;
+
+pdf.text(
+"Ana Clara Mineiro Souza Santos",
+20,
+y
+);
+
+y += 10;
+
+pdf.text(
+"Evailson dos Santos Couto",
+20,
+y
+);
+
+y += 10;
+
+pdf.text(
+"Giovanna Morais de Souza Arruda",
+20,
+y
+);
+
+y += 10;
+
+pdf.text(
+"João Vinícius Lima Mota",
+20,
+y
+);
+
+y += 10;
+
+pdf.text(
+"Larissa Rasec Santos Brandão",
+20,
+y
+);
+
+y += 10;
+
+pdf.text(
+"Mirela Santos Brito",
+20,
+y
+);
+
+pdf.save(
+"Ata_Oficial_Apuracao_UMES_2026.pdf"
+);
+
+};
+
+reader.readAsDataURL(blob);
+
+}
+  
 <script type="module">
 
 import { initializeApp }
