@@ -162,8 +162,12 @@ collection,
 addDoc,
 query,
 where,
-getDocs
-} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+getDocs,
+doc,
+getDoc,
+setDoc
+}
+from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBCgk_6cEcCF4_O2pACTSkhk1IInC-1Uro",
@@ -179,6 +183,27 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 window.registrarVoto = async function(){
+    
+const inicioVotacao =
+new Date("2026-07-25T06:00:00");
+
+const fimVotacao =
+new Date("2026-07-26T21:00:00");
+
+const agora = new Date();
+
+if(
+agora < inicioVotacao ||
+agora > fimVotacao
+){
+
+alert(
+"A votação não está disponível neste momento."
+);
+
+return;
+
+}
 
 const nome = document.getElementById("nome").value.trim();
 const email = document.getElementById("email").value.trim();
@@ -206,26 +231,25 @@ return;
 try{
 
 // Verifica CPF ou Matrícula
-const consultaIdentificador = query(
-collection(db,"votos"),
-where("identificador","==",identificador)
-);
+const eleitorRef =
+doc(db,"eleitores",identificador);
 
-const resultadoIdentificador =
-await getDocs(consultaIdentificador);
+const eleitorExistente =
+await getDoc(eleitorRef);
 
-if(!resultadoIdentificador.empty){
+if(eleitorExistente.exists()){
 
 alert(
-"Já existe um voto registrado para esta matrícula ou CPF."
+"Você já votou nesta eleição."
 );
 
 return;
+
 }
 
 // Verifica E-mail
 const consultaEmail = query(
-collection(db,"votos"),
+collection(db,"eleitores"),
 where("email","==",email)
 );
 
@@ -239,6 +263,7 @@ alert(
 );
 
 return;
+
 }
 
 // Gera protocolo
@@ -248,16 +273,26 @@ const protocolo =
 // Salva voto
 await addDoc(collection(db,"votos"),{
 
-nome,
-email,
-escola,
-turma,
-identificador,
 voto:votoSelecionado.value,
 protocolo,
 dataHora:new Date()
 
 });
+
+await setDoc(
+doc(db,"eleitores",identificador),
+{
+
+nome,
+email,
+escola,
+turma,
+protocolo,
+dataHora:new Date(),
+votou:true
+
+}
+);
 
 document.getElementById("resultado").style.display = "block";
 
