@@ -10,28 +10,26 @@ import {
   collection,
   getDocs,
   doc,
-  getDoc
-} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+  getDoc,
+  setDoc
+}
+from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
 // =========================
 // CONFIGURAÇÃO DO FIREBASE
 // =========================
 
 const firebaseConfig = {
-
-  apiKey: "COLOQUE_AQUI_A_MESMA_API_KEY_DO_RESULTADO.HTML",
-
+  apiKey: "AIzaSyBCgk_6cEcCF4_O2pACTSkhk1IInC-1Uro",
   authDomain: "umes-brejoes-eleicoes-2026.firebaseapp.com",
-
   projectId: "umes-brejoes-eleicoes-2026",
-
   storageBucket: "umes-brejoes-eleicoes-2026.firebasestorage.app",
-
   messagingSenderId: "406100216755",
-
-  appId: "1:406100216755:web:f994e5e2d386a2e97ed9c6"
-
+  appId: "1:406100216755:web:f994e5e2d386a2e97ed9c6",
+  measurementId: "G-F5EWF15PVY"
 };
+
+// Initialize Firebase
 
 const app = initializeApp(firebaseConfig);
 
@@ -158,6 +156,78 @@ aberta
 document.getElementById("status")
 .innerText =
 "⚪ NÃO CONFIGURADA";
+
+}
+
+}
+
+// =========================
+// ABRIR VOTAÇÃO
+// =========================
+
+window.abrirVotacao = async function(){
+
+try{
+
+await setDoc(
+doc(db,"configuracoes","eleicao"),
+{
+aberta:true
+},
+{merge:true}
+);
+
+document.getElementById("status").innerText =
+"🟢 VOTAÇÃO ABERTA";
+
+alert("A votação foi aberta com sucesso.");
+
+}catch(error){
+
+console.error(error);
+
+alert("Erro ao abrir a votação.");
+
+}
+
+}
+
+// =========================
+// ENCERRAR VOTAÇÃO
+// =========================
+
+window.encerrarVotacao = async function(){
+
+const confirmar = confirm(
+"Deseja realmente encerrar a votação?"
+);
+
+if(!confirmar){
+
+return;
+
+}
+
+try{
+
+await setDoc(
+doc(db,"configuracoes","eleicao"),
+{
+aberta:false
+},
+{merge:true}
+);
+
+document.getElementById("status").innerText =
+"🔴 VOTAÇÃO ENCERRADA";
+
+alert("A votação foi encerrada.");
+
+}catch(error){
+
+console.error(error);
+
+alert("Erro ao encerrar a votação.");
 
 }
 
