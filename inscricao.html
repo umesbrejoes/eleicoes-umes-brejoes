@@ -1,168 +1,1396 @@
-<section id="inscricao">
+<!DOCTYPE html>
+<html lang="pt-BR">
 
-<div class="card">
+<head>
 
-<h2>Inscrição de Chapas</h2>
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Inscrição de Chapas | Eleições UMES Brejões 2026</title>
+
+<link rel="stylesheet" href="css/inscricao.css">
+
+</head>
+
+<body>
+
+<div class="container">
+
+<header>
+
+<img src="imagens/imagens/logo-umes.png"
+alt="UMES Brejões"
+class="logo">
+
+<h1>
+
+Eleições UMES Brejões 2026
+
+</h1>
 
 <p>
-As inscrições de chapas estarão abertas das <strong>00h00 do dia 06 de julho de 2026</strong> até <strong>às 21h00 do dia 14 de julho de 2026</strong>, exclusivamente por meio deste Portal Oficial.
+
+Portal Oficial de Inscrição de Chapas
+
 </p>
+
+</header>
+
+<div class="informacoes">
+
+<h2>
+
+Inscrição de Chapas
+
+</h2>
+
+<p>
+
+As inscrições de chapas ocorrerão entre
+<strong>06 de julho de 2026</strong>
+e
+<strong>14 de julho de 2026</strong>,
+até às
+<strong>21h</strong>,
+exclusivamente por meio deste Portal Oficial.
+
+</p>
+
+<p>
+
+Cada chapa deverá ser composta obrigatoriamente por:
+
+</p>
+
+<ul>
+
+<li>Presidente;</li>
+
+<li>Vice-Presidente.</li>
+
+</ul>
+
+<p>
+
+A inscrição deverá ser realizada por apenas um dos integrantes da chapa.
+
+</p>
+
+<div class="alerta">
+
+<strong>Atenção:</strong>
+
+Após o envio da inscrição, nenhuma informação poderá ser alterada pelo sistema.
+Caso seja necessário corrigir algum dado, a Comissão Eleitoral deverá ser comunicada durante o período de inscrições.
+
+</div>
+
+</div>
 
 <form id="formInscricao">
 
-<h3>Dados da Chapa</h3>
+<section class="bloco">
 
-<label>Nome da Chapa *</label>
-<input type="text" id="nomeChapa" required>
+<h2>
 
-<label>Sigla da Chapa (opcional)</label>
-<input type="text" id="sigla">
+Dados da Chapa
 
-<label>Slogan (opcional)</label>
-<input type="text" id="slogan">
+</h2>
 
-<label>Plano de Gestão *</label>
-<textarea id="plano" rows="6" required></textarea>
+<div class="campo">
 
-<hr>
+<label for="nomeChapa">
 
-<h3>Presidente</h3>
+Nome da Chapa <span>*</span>
 
-<label>Nome Completo *</label>
-<input type="text" id="presidenteNome" required>
-
-<label>CPF *</label>
-<input type="text" id="presidenteCpf" required>
-
-<label>RG *</label>
-<input type="text" id="presidenteRg" required>
-
-<label>Data de Nascimento *</label>
-<input type="date" id="presidenteNascimento" required>
-
-<label>Endereço Completo *</label>
-<textarea id="presidenteEndereco" rows="3" required></textarea>
-
-<label>CEP *</label>
-<input type="text" id="presidenteCep" required>
-
-<label>Escola *</label>
-<input type="text" id="presidenteEscola" required>
-
-<label>Série/Ano *</label>
-<input type="text" id="presidenteSerie" required>
-
-<label>Turno *</label>
-<select id="presidenteTurno" required>
-<option value="">Selecione</option>
-<option>Matutino</option>
-<option>Vespertino</option>
-<option>Noturno</option>
-<option>Integral</option>
-</select>
-
-<label>E-mail *</label>
-<input type="email" id="presidenteEmail" required>
-
-<label>WhatsApp *</label>
-<input type="tel" id="presidenteWhatsapp" required>
-
-<hr>
-
-<h3>Vice-Presidente</h3>
-
-<label>Nome Completo *</label>
-<input type="text" id="viceNome" required>
-
-<label>CPF *</label>
-<input type="text" id="viceCpf" required>
-
-<label>RG *</label>
-<input type="text" id="viceRg" required>
-
-<label>Data de Nascimento *</label>
-<input type="date" id="viceNascimento" required>
-
-<label>Endereço Completo *</label>
-<textarea id="viceEndereco" rows="3" required></textarea>
-
-<label>CEP *</label>
-<input type="text" id="viceCep" required>
-
-<label>Escola *</label>
-<input type="text" id="viceEscola" required>
-
-<label>Série/Ano *</label>
-<input type="text" id="viceSerie" required>
-
-<label>Turno *</label>
-<select id="viceTurno" required>
-<option value="">Selecione</option>
-<option>Matutino</option>
-<option>Vespertino</option>
-<option>Noturno</option>
-<option>Integral</option>
-</select>
-
-<label>E-mail *</label>
-<input type="email" id="viceEmail" required>
-
-<label>WhatsApp *</label>
-<input type="tel" id="viceWhatsapp" required>
-
-<hr>
-
-<h3>Documentos Obrigatórios</h3>
-
-<label>Documento de Identidade do Presidente *</label>
-<input type="file" accept=".pdf,.jpg,.jpeg,.png" required>
-
-<label>Documento de Identidade do Vice *</label>
-<input type="file" accept=".pdf,.jpg,.jpeg,.png" required>
-
-<label>Comprovante de Matrícula do Presidente *</label>
-<input type="file" accept=".pdf,.jpg,.jpeg,.png" required>
-
-<label>Comprovante de Matrícula do Vice *</label>
-<input type="file" accept=".pdf,.jpg,.jpeg,.png" required>
-
-<label>Declaração de Concordância *</label>
-<input type="file" accept=".pdf" required>
-
-<label>Carta-Programa da Chapa (opcional)</label>
-<input type="file" accept=".pdf">
-
-<hr>
-
-<h3>Declarações</h3>
-
-<label>
-<input type="checkbox" required>
-Declaro que todas as informações prestadas são verdadeiras.
 </label>
 
-<br><br>
+<input
+type="text"
+id="nomeChapa"
+name="nomeChapa"
+maxlength="120"
+required>
 
-<label>
-<input type="checkbox" required>
-Declaro que li e aceito o Edital Eleitoral, o Regimento Eleitoral e os Atos Normativos da Comissão Eleitoral.
+</div>
+
+<div class="campo">
+
+<label for="siglaChapa">
+
+Sigla da Chapa
+
 </label>
 
-<br><br>
+<input
+type="text"
+id="siglaChapa"
+name="siglaChapa"
+maxlength="20">
 
-<label>
-<input type="checkbox" required>
-Autorizo o tratamento dos meus dados pessoais exclusivamente para fins do Processo Eleitoral da UMES Brejões 2026.
+</div>
+
+<div class="campo">
+
+<label for="slogan">
+
+Slogan
+
 </label>
 
-<br><br>
+<input
+type="text"
+id="slogan"
+name="slogan"
+maxlength="150">
 
-<button type="submit">
-Inscrever Chapa
-</button>
+</div>
 
-</form>
+<div class="campo">
+
+<label>
+
+Carta-programa / Plano de Gestão
+
+</label>
+
+<p class="descricao">
+
+Você poderá:
+
+</p>
+
+<label class="radio">
+
+<input
+type="radio"
+name="tipoPlano"
+value="texto"
+checked>
+
+Escrever diretamente no formulário
+
+</label>
+
+<label class="radio">
+
+<input
+type="radio"
+name="tipoPlano"
+value="arquivo">
+
+Enviar um arquivo em PDF
+
+</label>
+
+</div>
+
+<div
+id="planoTexto">
+
+<label for="textoPlano">
+
+Plano de Gestão
+
+</label>
+
+<textarea
+
+id="textoPlano"
+
+name="textoPlano"
+
+rows="12"
+
+placeholder="Descreva as propostas da chapa...">
+
+</textarea>
+
+</div>
+
+<div
+id="planoArquivo"
+style="display:none;">
+
+<label>
+
+Enviar Plano de Gestão (PDF)
+
+</label>
+
+<input
+type="file"
+id="arquivoPlano"
+accept=".pdf">
+
+<p class="descricao">
+
+Formato permitido:
+PDF
+
+Tamanho máximo:
+10 MB.
+
+</p>
 
 </div>
 
 </section>
+
+<section class="bloco">
+
+<h2>
+
+Dados do(a) Presidente
+
+</h2>
+
+<div class="linha">
+
+<div class="campo">
+
+<label for="presidenteNome">
+
+Nome Completo <span>*</span>
+
+</label>
+
+<input
+type="text"
+id="presidenteNome"
+name="presidenteNome"
+maxlength="150"
+required>
+
+</div>
+
+<div class="campo">
+
+<label for="presidenteNascimento">
+
+Data de Nascimento <span>*</span>
+
+</label>
+
+<input
+type="date"
+id="presidenteNascimento"
+name="presidenteNascimento"
+required>
+
+</div>
+
+</div>
+
+<div class="linha">
+
+<div class="campo">
+
+<label for="presidenteCPF">
+
+CPF <span>*</span>
+
+</label>
+
+<input
+type="text"
+id="presidenteCPF"
+name="presidenteCPF"
+maxlength="14"
+placeholder="000.000.000-00"
+required>
+
+</div>
+
+<div class="campo">
+
+<label for="presidenteRG">
+
+RG <span>*</span>
+
+</label>
+
+<input
+type="text"
+id="presidenteRG"
+name="presidenteRG"
+maxlength="20"
+required>
+
+</div>
+
+</div>
+
+<h3>
+
+Endereço Residencial
+
+</h3>
+
+<div class="linha">
+
+<div class="campo">
+
+<label for="presidenteCEP">
+
+CEP <span>*</span>
+
+</label>
+
+<input
+type="text"
+id="presidenteCEP"
+name="presidenteCEP"
+maxlength="9"
+placeholder="00000-000"
+required>
+
+</div>
+
+<div class="campo">
+
+<label for="presidenteLogradouro">
+
+Logradouro <span>*</span>
+
+</label>
+
+<input
+type="text"
+id="presidenteLogradouro"
+name="presidenteLogradouro"
+required>
+
+</div>
+
+</div>
+
+<div class="linha">
+
+<div class="campo">
+
+<label for="presidenteNumero">
+
+Número <span>*</span>
+
+</label>
+
+<input
+type="text"
+id="presidenteNumero"
+name="presidenteNumero"
+required>
+
+</div>
+
+<div class="campo">
+
+<label for="presidenteComplemento">
+
+Complemento
+
+</label>
+
+<input
+type="text"
+id="presidenteComplemento"
+name="presidenteComplemento">
+
+</div>
+
+</div>
+
+<div class="linha">
+
+<div class="campo">
+
+<label for="presidenteBairro">
+
+Bairro <span>*</span>
+
+</label>
+
+<input
+type="text"
+id="presidenteBairro"
+name="presidenteBairro"
+required>
+
+</div>
+
+<div class="campo">
+
+<label for="presidenteMunicipio">
+
+Município <span>*</span>
+
+</label>
+
+<input
+type="text"
+id="presidenteMunicipio"
+name="presidenteMunicipio"
+required>
+
+</div>
+
+<div class="campo">
+
+<label for="presidenteEstado">
+
+Estado <span>*</span>
+
+</label>
+
+<select
+id="presidenteEstado"
+name="presidenteEstado"
+required>
+
+<option value="">Selecione</option>
+
+<option value="AC">Acre</option>
+<option value="AL">Alagoas</option>
+<option value="AP">Amapá</option>
+<option value="AM">Amazonas</option>
+<option value="BA">Bahia</option>
+<option value="CE">Ceará</option>
+<option value="DF">Distrito Federal</option>
+<option value="ES">Espírito Santo</option>
+<option value="GO">Goiás</option>
+<option value="MA">Maranhão</option>
+<option value="MT">Mato Grosso</option>
+<option value="MS">Mato Grosso do Sul</option>
+<option value="MG">Minas Gerais</option>
+<option value="PA">Pará</option>
+<option value="PB">Paraíba</option>
+<option value="PR">Paraná</option>
+<option value="PE">Pernambuco</option>
+<option value="PI">Piauí</option>
+<option value="RJ">Rio de Janeiro</option>
+<option value="RN">Rio Grande do Norte</option>
+<option value="RS">Rio Grande do Sul</option>
+<option value="RO">Rondônia</option>
+<option value="RR">Roraima</option>
+<option value="SC">Santa Catarina</option>
+<option value="SP">São Paulo</option>
+<option value="SE">Sergipe</option>
+<option value="TO">Tocantins</option>
+
+</select>
+
+</div>
+
+</div>
+
+<h3>
+
+Dados Escolares
+
+</h3>
+
+<div class="linha">
+
+<div class="campo">
+
+<label for="presidenteEscola">
+
+Escola em que estuda <span>*</span>
+
+</label>
+
+<input
+type="text"
+id="presidenteEscola"
+name="presidenteEscola"
+required>
+
+</div>
+
+<div class="campo">
+
+<label for="presidenteSerie">
+
+Série / Ano <span>*</span>
+
+</label>
+
+<input
+type="text"
+id="presidenteSerie"
+name="presidenteSerie"
+required>
+
+</div>
+
+</div>
+
+<div class="linha">
+
+<div class="campo">
+
+<label for="presidenteTurno">
+
+Turno <span>*</span>
+
+</label>
+
+<select
+id="presidenteTurno"
+name="presidenteTurno"
+required>
+
+<option value="">Selecione</option>
+
+<option>Matutino</option>
+
+<option>Vespertino</option>
+
+<option>Noturno</option>
+
+<option>Integral</option>
+
+</select>
+
+</div>
+
+<div class="campo">
+
+<label for="presidenteMatricula">
+
+Matrícula Escolar
+
+</label>
+
+<input
+type="text"
+id="presidenteMatricula"
+name="presidenteMatricula">
+
+</div>
+
+</div>
+
+<h3>
+
+Contato
+
+</h3>
+
+<div class="linha">
+
+<div class="campo">
+
+<label for="presidenteEmail">
+
+E-mail <span>*</span>
+
+</label>
+
+<input
+type="email"
+id="presidenteEmail"
+name="presidenteEmail"
+required>
+
+</div>
+
+<div class="campo">
+
+<label for="presidenteTelefone">
+
+Telefone / WhatsApp <span>*</span>
+
+</label>
+
+<input
+type="tel"
+id="presidenteTelefone"
+name="presidenteTelefone"
+placeholder="(00) 00000-0000"
+required>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="bloco">
+
+<h2>
+
+Dados do(a) Vice-Presidente
+
+</h2>
+
+<div class="linha">
+
+<div class="campo">
+
+<label for="viceNome">
+
+Nome Completo <span>*</span>
+
+</label>
+
+<input
+type="text"
+id="viceNome"
+name="viceNome"
+maxlength="150"
+required>
+
+</div>
+
+<div class="campo">
+
+<label for="viceNascimento">
+
+Data de Nascimento <span>*</span>
+
+</label>
+
+<input
+type="date"
+id="viceNascimento"
+name="viceNascimento"
+required>
+
+</div>
+
+</div>
+
+<div class="linha">
+
+<div class="campo">
+
+<label for="viceCPF">
+
+CPF <span>*</span>
+
+</label>
+
+<input
+type="text"
+id="viceCPF"
+name="viceCPF"
+maxlength="14"
+placeholder="000.000.000-00"
+required>
+
+</div>
+
+<div class="campo">
+
+<label for="viceRG">
+
+RG <span>*</span>
+
+</label>
+
+<input
+type="text"
+id="viceRG"
+name="viceRG"
+maxlength="20"
+required>
+
+</div>
+
+</div>
+
+<h3>
+
+Endereço Residencial
+
+</h3>
+
+<div class="linha">
+
+<div class="campo">
+
+<label for="viceCEP">
+
+CEP <span>*</span>
+
+</label>
+
+<input
+type="text"
+id="viceCEP"
+name="viceCEP"
+maxlength="9"
+placeholder="00000-000"
+required>
+
+</div>
+
+<div class="campo">
+
+<label for="viceLogradouro">
+
+Logradouro <span>*</span>
+
+</label>
+
+<input
+type="text"
+id="viceLogradouro"
+name="viceLogradouro"
+required>
+
+</div>
+
+</div>
+
+<div class="linha">
+
+<div class="campo">
+
+<label for="viceNumero">
+
+Número <span>*</span>
+
+</label>
+
+<input
+type="text"
+id="viceNumero"
+name="viceNumero"
+required>
+
+</div>
+
+<div class="campo">
+
+<label for="viceComplemento">
+
+Complemento
+
+</label>
+
+<input
+type="text"
+id="viceComplemento"
+name="viceComplemento">
+
+</div>
+
+</div>
+
+<div class="linha">
+
+<div class="campo">
+
+<label for="viceBairro">
+
+Bairro <span>*</span>
+
+</label>
+
+<input
+type="text"
+id="viceBairro"
+name="viceBairro"
+required>
+
+</div>
+
+<div class="campo">
+
+<label for="viceMunicipio">
+
+Município <span>*</span>
+
+</label>
+
+<input
+type="text"
+id="viceMunicipio"
+name="viceMunicipio"
+required>
+
+</div>
+
+<div class="campo">
+
+<label for="viceEstado">
+
+Estado <span>*</span>
+
+</label>
+
+<select
+id="viceEstado"
+name="viceEstado"
+required>
+
+<option value="">Selecione</option>
+
+<option value="AC">Acre</option>
+<option value="AL">Alagoas</option>
+<option value="AP">Amapá</option>
+<option value="AM">Amazonas</option>
+<option value="BA">Bahia</option>
+<option value="CE">Ceará</option>
+<option value="DF">Distrito Federal</option>
+<option value="ES">Espírito Santo</option>
+<option value="GO">Goiás</option>
+<option value="MA">Maranhão</option>
+<option value="MT">Mato Grosso</option>
+<option value="MS">Mato Grosso do Sul</option>
+<option value="MG">Minas Gerais</option>
+<option value="PA">Pará</option>
+<option value="PB">Paraíba</option>
+<option value="PR">Paraná</option>
+<option value="PE">Pernambuco</option>
+<option value="PI">Piauí</option>
+<option value="RJ">Rio de Janeiro</option>
+<option value="RN">Rio Grande do Norte</option>
+<option value="RS">Rio Grande do Sul</option>
+<option value="RO">Rondônia</option>
+<option value="RR">Roraima</option>
+<option value="SC">Santa Catarina</option>
+<option value="SP">São Paulo</option>
+<option value="SE">Sergipe</option>
+<option value="TO">Tocantins</option>
+
+</select>
+
+</div>
+
+</div>
+
+<h3>
+
+Dados Escolares
+
+</h3>
+
+<div class="linha">
+
+<div class="campo">
+
+<label for="viceEscola">
+
+Escola em que estuda <span>*</span>
+
+</label>
+
+<input
+type="text"
+id="viceEscola"
+name="viceEscola"
+required>
+
+</div>
+
+<div class="campo">
+
+<label for="viceSerie">
+
+Série / Ano <span>*</span>
+
+</label>
+
+<input
+type="text"
+id="viceSerie"
+name="viceSerie"
+required>
+
+</div>
+
+</div>
+
+<div class="linha">
+
+<div class="campo">
+
+<label for="viceTurno">
+
+Turno <span>*</span>
+
+</label>
+
+<select
+id="viceTurno"
+name="viceTurno"
+required>
+
+<option value="">Selecione</option>
+
+<option>Matutino</option>
+
+<option>Vespertino</option>
+
+<option>Noturno</option>
+
+<option>Integral</option>
+
+</select>
+
+</div>
+
+<div class="campo">
+
+<label for="viceMatricula">
+
+Matrícula Escolar
+
+</label>
+
+<input
+type="text"
+id="viceMatricula"
+name="viceMatricula">
+
+</div>
+
+</div>
+
+<h3>
+
+Contato
+
+</h3>
+
+<div class="linha">
+
+<div class="campo">
+
+<label for="viceEmail">
+
+E-mail <span>*</span>
+
+</label>
+
+<input
+type="email"
+id="viceEmail"
+name="viceEmail"
+required>
+
+</div>
+
+<div class="campo">
+
+<label for="viceTelefone">
+
+Telefone / WhatsApp <span>*</span>
+
+</label>
+
+<input
+type="tel"
+id="viceTelefone"
+name="viceTelefone"
+placeholder="(00) 00000-0000"
+required>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="bloco">
+
+<h2>
+
+Documentos Obrigatórios
+
+</h2>
+
+<p class="descricao">
+
+Todos os documentos deverão estar legíveis e, preferencialmente, em formato PDF.
+Serão aceitos arquivos PDF, JPG, JPEG e PNG, com tamanho máximo de 10 MB por arquivo.
+
+</p>
+
+<div class="campo">
+
+<label for="docPresidente">
+
+Documento oficial com foto do(a) Presidente <span>*</span>
+
+</label>
+
+<input
+type="file"
+id="docPresidente"
+name="docPresidente"
+accept=".pdf,.jpg,.jpeg,.png"
+required>
+
+</div>
+
+<div class="campo">
+
+<label for="docVice">
+
+Documento oficial com foto do(a) Vice-Presidente <span>*</span>
+
+</label>
+
+<input
+type="file"
+id="docVice"
+name="docVice"
+accept=".pdf,.jpg,.jpeg,.png"
+required>
+
+</div>
+
+<div class="campo">
+
+<label for="cpfDocumento">
+
+CPF (caso não conste no documento de identidade)
+
+</label>
+
+<input
+type="file"
+id="cpfDocumento"
+name="cpfDocumento"
+accept=".pdf,.jpg,.jpeg,.png">
+
+</div>
+
+<div class="campo">
+
+<label for="matriculaPresidente">
+
+Comprovante de Matrícula do(a) Presidente <span>*</span>
+
+</label>
+
+<input
+type="file"
+id="matriculaPresidente"
+name="matriculaPresidente"
+accept=".pdf,.jpg,.jpeg,.png"
+required>
+
+</div>
+
+<div class="campo">
+
+<label for="matriculaVice">
+
+Comprovante de Matrícula do(a) Vice-Presidente <span>*</span>
+
+</label>
+
+<input
+type="file"
+id="matriculaVice"
+name="matriculaVice"
+accept=".pdf,.jpg,.jpeg,.png"
+required>
+
+</div>
+
+<div class="campo">
+
+<label for="declaracao">
+
+Declaração de Concordância assinada pelos integrantes da chapa <span>*</span>
+
+</label>
+
+<input
+type="file"
+id="declaracao"
+name="declaracao"
+accept=".pdf,.jpg,.jpeg,.png"
+required>
+
+</div>
+
+<div class="campo">
+
+<label for="planoGestaoArquivo">
+
+Carta-programa / Plano de Gestão (quando enviada em PDF)
+
+</label>
+
+<input
+type="file"
+id="planoGestaoArquivo"
+name="planoGestaoArquivo"
+accept=".pdf">
+
+</div>
+
+</section>
+
+<section class="bloco">
+
+<h2>
+
+Declarações
+
+</h2>
+
+<div class="checkbox">
+
+<label>
+
+<input
+type="checkbox"
+id="declaracaoVerdade"
+required>
+
+Declaro que todas as informações prestadas são verdadeiras.
+
+</label>
+
+</div>
+
+<div class="checkbox">
+
+<label>
+
+<input
+type="checkbox"
+id="declaracaoEdital"
+required>
+
+Declaro que conheço e aceito integralmente as normas do Edital e do Regimento Eleitoral da UMES Brejões.
+
+</label>
+
+</div>
+
+<div class="checkbox">
+
+<label>
+
+<input
+type="checkbox"
+id="declaracaoLGPD"
+required>
+
+Autorizo o tratamento dos dados pessoais informados exclusivamente para fins do Processo Eleitoral da UMES Brejões 2026.
+
+</label>
+
+</div>
+
+</section>
+
+<section class="bloco">
+
+<h2>
+
+Observações
+
+</h2>
+
+<textarea
+
+id="observacoes"
+
+name="observacoes"
+
+rows="5"
+
+placeholder="Caso deseje, registre alguma observação para a Comissão Eleitoral.">
+
+</textarea>
+
+</section>
+
+<div class="aviso-final">
+
+<strong>Atenção:</strong>
+
+Após o envio da inscrição, será gerado automaticamente um número de protocolo.
+
+A Comissão Eleitoral analisará a documentação apresentada e publicará posteriormente a decisão quanto à homologação ou ao indeferimento da chapa.
+
+</div>
+
+<div class="acoes">
+
+<button
+
+type="submit"
+
+id="btnInscrever">
+
+📄 Inscrever Chapa
+
+</button>
+
+<button
+
+type="reset">
+
+Limpar Formulário
+
+</button>
+
+</div>
+
+<div id="comprovanteInscricao" class="comprovante" style="display:none;">
+
+<h2>
+
+Inscrição realizada com sucesso!
+
+</h2>
+
+<p>
+
+Sua inscrição foi recebida pela Comissão Eleitoral da União Municipal dos e das Estudantes de Brejões.
+
+</p>
+
+<div class="protocolo">
+
+<p>
+
+<strong>Número da Inscrição:</strong>
+
+<span id="numeroInscricaoGerado">
+
+INS-2026-0000
+
+</span>
+
+</p>
+
+<p>
+
+<strong>Data e horário:</strong>
+
+<span id="dataHoraInscricao">
+
+--
+
+</span>
+
+</p>
+
+<p>
+
+<strong>Status:</strong>
+
+<span id="statusInscricao">
+
+PENDENTE
+
+</span>
+
+</p>
+
+</div>
+
+<p>
+
+Guarde o número da inscrição. Ele será utilizado para acompanhar a situação da chapa durante todo o Processo Eleitoral.
+
+</p>
+
+<div class="acoes">
+
+<button
+type="button"
+id="btnBaixarComprovante">
+
+📄 Baixar Comprovante (PDF)
+
+</button>
+
+<button
+type="button"
+onclick="window.location.href='index.html'">
+
+Voltar ao Portal
+
+</button>
+
+</div>
+
+</div>
+
+<div id="modalConfirmacao" class="modal" style="display:none;">
+
+<div class="modal-conteudo">
+
+<h2>
+
+Confirmar Inscrição
+
+</h2>
+
+<p>
+
+Após confirmar, a inscrição será enviada para análise da Comissão Eleitoral.
+
+Nenhuma informação poderá ser alterada pelo sistema após o envio.
+
+</p>
+
+<div class="acoes">
+
+<button
+type="button"
+id="btnConfirmarEnvio">
+
+Confirmar Inscrição
+
+</button>
+
+<button
+type="button"
+id="btnCancelarEnvio">
+
+Cancelar
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</form>
+
+<footer>
+
+<hr>
+
+<p>
+
+União Municipal dos e das Estudantes de Brejões – UMES Brejões
+
+</p>
+
+<p>
+
+Sistema Oficial do Processo Eleitoral • Eleições 2026
+
+</p>
+
+<p>
+
+Todos os dados enviados serão utilizados exclusivamente para fins do Processo Eleitoral, em conformidade com o Edital Eleitoral e com a legislação aplicável.
+
+</p>
+
+</footer>
+
+<script type="module" src="js/inscricao.js"></script>
+
+</body>
+
+</html>
