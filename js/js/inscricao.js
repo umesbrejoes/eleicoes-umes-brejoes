@@ -7,62 +7,15 @@
 // IMPORTS
 // =====================================================
 
-import { initializeApp }
-from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-
 import {
 
-getFirestore,
-
-collection,
-
-doc,
-
-getDoc,
-
-getDocs,
-
-setDoc,
-
-addDoc,
-
-query,
-
-where,
+db,
 
 serverTimestamp
 
 }
 
-from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
-
-import { uploadArquivo }
-
-from "./cloudinary.js";
-
-// =====================================================
-// FIREBASE
-// =====================================================
-
-const firebaseConfig = {
-
-apiKey:"SUA_API_KEY",
-
-authDomain:"umes-brejoes-eleicoes-2026.firebaseapp.com",
-
-projectId:"umes-brejoes-eleicoes-2026",
-
-storageBucket:"umes-brejoes-eleicoes-2026.firebasestorage.app",
-
-messagingSenderId:"406100216755",
-
-appId:"1:406100216755:web:f994e5e2d386a2e97ed9c6"
-
-};
-
-const app = initializeApp(firebaseConfig);
-
-const db = getFirestore(app);
+from "./firebase.js";
 
 // =====================================================
 // CONFIGURAÇÕES DO SISTEMA
