@@ -1,87 +1,216 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
+
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Painel Administrativo - UMES Brejões</title>
 
-<style>
-body{
-font-family:Arial,sans-serif;
-background:#f4f6f9;
-padding:20px;
-}
+<title>Painel Administrativo | UMES Brejões</title>
 
-.container{
-max-width:1000px;
-margin:auto;
-background:white;
-padding:30px;
-border-radius:10px;
-}
-
-.card{
-background:#eef5ff;
-padding:15px;
-margin-top:15px;
-border-radius:8px;
-}
-
-button{
-padding:10px 20px;
-margin:5px;
-cursor:pointer;
-}
-</style>
+<link rel="stylesheet" href="css/admin.css">
 
 </head>
 
 <body>
 
-<div class="container">
+<div id="login">
 
-<h1>Painel Administrativo</h1>
+<div class="login-box">
 
-<div class="card">
-Situação da votação:
-<span id="status">Carregando...</span>
-</div>
+<img src="imagens/imagens/logo-umes.png" class="logo">
 
-<div class="card">
-Total de eleitores:
-<span id="totalEleitores">0</span>
-</div>
+<h1>Comissão Eleitoral</h1>
 
-<div class="card">
-Total de votos:
-<span id="totalVotos">0</span>
-</div>
+<p>
+Painel Administrativo da Eleição
+</p>
 
-<h2>Controle da Urna</h2>
+<input
+type="email"
+id="email"
+placeholder="E-mail">
 
-<button>
-🟢 Abrir Votação
+<input
+type="password"
+id="senha"
+placeholder="Senha">
+
+<button onclick="entrar()">
+Entrar
 </button>
 
-<button>
-🔴 Encerrar Votação
+</div>
+
+</div>
+
+<div id="painel">
+
+<header>
+
+<img src="imagens/imagens/logo-umes.png" class="logo-header">
+
+<div>
+
+<h1>
+PAINEL ADMINISTRATIVO
+</h1>
+
+<p>
+União Municipal dos e das Estudantes de Brejões
+</p>
+
+</div>
+
+</header>
+
+<section class="cards">
+
+<div class="card">
+
+<h2>
+Situação
+</h2>
+
+<span id="status">
+Carregando...
+</span>
+
+</div>
+
+<div class="card">
+
+<h2>
+Eleitores
+</h2>
+
+<span id="totalEleitores">
+0
+</span>
+
+</div>
+
+<div class="card">
+
+<h2>
+Votos
+</h2>
+
+<span id="totalVotos">
+0
+</span>
+
+</div>
+
+<div class="card">
+
+<h2>
+Chapas
+</h2>
+
+<span id="totalChapas">
+0
+</span>
+
+</div>
+
+</section>
+
+<section class="botoes">
+
+<button
+onclick="abrirVotacao()">
+
+🟢 Abrir votação
+
 </button>
 
-<h2>Cadastro de Chapas</h2>
+<button
+onclick="encerrarVotacao()">
 
-<input type="text" placeholder="Número da Chapa">
+🔴 Encerrar votação
 
-<input type="text" placeholder="Nome da Chapa">
+</button>
 
-<input type="text" placeholder="Presidente">
+<button
+onclick="gerarAtaPDF()">
 
-<input type="text" placeholder="Vice-Presidente">
+📄 Ata Oficial
 
-<button>
+</button>
+
+<button
+onclick="gerarAuditoriaPDF()">
+
+📑 Auditoria
+
+</button>
+
+</section>
+
+<section class="cadastro">
+
+<h2>
+
 Cadastrar Chapa
+
+</h2>
+
+<input
+type="number"
+id="numero">
+
+<input
+type="text"
+id="nomeChapa"
+placeholder="Nome da chapa">
+
+<input
+type="text"
+id="presidente"
+placeholder="Presidente">
+
+<input
+type="text"
+id="vice"
+placeholder="Vice-Presidente">
+
+<button
+onclick="salvarChapa()">
+
+Cadastrar
+
 </button>
 
+</section>
+
+<section>
+
+<h2>
+
+Chapas Homologadas
+
+</h2>
+
+<div id="listaChapas">
+
 </div>
+
+</section>
+
+<footer>
+
+Sistema Eleitoral UMES Brejões • Comissão Eleitoral 2026
+
+</footer>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script type="module" src="js/admin.js"></script>
 
 </body>
+
 </html>
