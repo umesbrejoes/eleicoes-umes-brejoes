@@ -1,0 +1,908 @@
+/* ==========================================================
+   SISTEMA OFICIAL DAS ELEIÇÕES
+   UMES BREJÕES 2026
+   Arquivo: login.css
+========================================================== */
+
+/* ==========================
+   RESET
+========================== */
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+html{
+
+scroll-behavior:smooth;
+
+}
+
+body{
+
+font-family:"Inter",sans-serif;
+
+background:#f4f6f9;
+
+min-height:100vh;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+overflow:hidden;
+
+color:#1f2937;
+
+}
+
+/* ==========================
+   VARIÁVEIS
+========================== */
+
+:root{
+
+--azul:#003366;
+
+--azul-claro:#0d6efd;
+
+--branco:#ffffff;
+
+--cinza:#f4f6f9;
+
+--texto:#374151;
+
+--erro:#dc3545;
+
+--sucesso:#198754;
+
+--radius:18px;
+
+--sombra:
+0 20px 40px rgba(0,0,0,.12);
+
+}
+
+/* ==========================
+   FUNDO
+========================== */
+
+.background{
+
+position:fixed;
+
+top:0;
+
+left:0;
+
+width:100%;
+
+height:100%;
+
+background:
+
+linear-gradient(
+
+135deg,
+
+#003366,
+
+#0059b3
+
+);
+
+z-index:-2;
+
+}
+
+.background::after{
+
+content:"";
+
+position:absolute;
+
+width:700px;
+
+height:700px;
+
+background:rgba(255,255,255,.08);
+
+border-radius:50%;
+
+top:-250px;
+
+right:-250px;
+
+}
+
+.background::before{
+
+content:"";
+
+position:absolute;
+
+width:600px;
+
+height:600px;
+
+background:rgba(255,255,255,.05);
+
+border-radius:50%;
+
+bottom:-220px;
+
+left:-220px;
+
+}
+
+/* ==========================
+   CONTAINER
+========================== */
+
+.container{
+
+width:100%;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+padding:30px;
+
+}
+
+/* ==========================
+   CARD
+========================== */
+
+.login-card{
+
+background:white;
+
+width:100%;
+
+max-width:430px;
+
+padding:40px;
+
+border-radius:22px;
+
+box-shadow:var(--sombra);
+
+animation:entrada .45s ease;
+
+}
+
+@keyframes entrada{
+
+from{
+
+opacity:0;
+
+transform:translateY(20px);
+
+}
+
+to{
+
+opacity:1;
+
+transform:translateY(0);
+
+}
+
+}
+
+/* ==========================
+   LOGO
+========================== */
+
+.logo{
+
+text-align:center;
+
+margin-bottom:25px;
+
+}
+
+.logo h1{
+
+font-size:42px;
+
+font-weight:700;
+
+color:#003366;
+
+}
+
+.logo span{
+
+font-size:17px;
+
+color:#666;
+
+}
+
+.login-card h2{
+
+text-align:center;
+
+margin-bottom:10px;
+
+color:#003366;
+
+}
+
+.login-card p{
+
+text-align:center;
+
+margin-bottom:30px;
+
+color:#666;
+
+font-size:15px;
+
+}
+
+/* ==========================================================
+   FORMULÁRIO
+========================================================== */
+
+.campo{
+
+margin-bottom:22px;
+
+}
+
+.campo label{
+
+display:block;
+
+margin-bottom:8px;
+
+font-size:14px;
+
+font-weight:600;
+
+color:#374151;
+
+}
+
+.input{
+
+position:relative;
+
+display:flex;
+
+align-items:center;
+
+}
+
+.input i{
+
+position:absolute;
+
+left:16px;
+
+color:#6b7280;
+
+font-size:16px;
+
+}
+
+.input input{
+
+width:100%;
+
+height:52px;
+
+padding-left:48px;
+
+padding-right:50px;
+
+border:1px solid #d1d5db;
+
+border-radius:12px;
+
+font-size:15px;
+
+outline:none;
+
+transition:.25s;
+
+background:#fff;
+
+}
+
+.input input:focus{
+
+border-color:#003366;
+
+box-shadow:0 0 0 3px rgba(0,51,102,.15);
+
+}
+
+.input input::placeholder{
+
+color:#9ca3af;
+
+}
+
+/* ==========================================================
+   BOTÃO MOSTRAR SENHA
+========================================================== */
+
+.icone{
+
+position:absolute;
+
+right:12px;
+
+width:36px;
+
+height:36px;
+
+border:none;
+
+background:none;
+
+cursor:pointer;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+color:#6b7280;
+
+border-radius:8px;
+
+transition:.25s;
+
+}
+
+.icone:hover{
+
+background:#f3f4f6;
+
+color:#003366;
+
+}
+
+/* ==========================================================
+   OPÇÕES
+========================================================== */
+
+.opcoes{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+margin-top:-5px;
+
+margin-bottom:25px;
+
+font-size:14px;
+
+gap:10px;
+
+}
+
+.opcoes label{
+
+display:flex;
+
+align-items:center;
+
+gap:8px;
+
+cursor:pointer;
+
+color:#374151;
+
+}
+
+.opcoes input[type="checkbox"]{
+
+width:16px;
+
+height:16px;
+
+cursor:pointer;
+
+accent-color:#003366;
+
+}
+
+.opcoes a{
+
+text-decoration:none;
+
+color:#003366;
+
+font-weight:600;
+
+transition:.25s;
+
+}
+
+.opcoes a:hover{
+
+text-decoration:underline;
+
+}
+
+/* ==========================================================
+   BOTÃO ENTRAR
+========================================================== */
+
+#btnEntrar{
+
+width:100%;
+
+height:54px;
+
+border:none;
+
+border-radius:12px;
+
+background:#003366;
+
+color:white;
+
+font-size:16px;
+
+font-weight:600;
+
+cursor:pointer;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+gap:10px;
+
+transition:.25s;
+
+}
+
+#btnEntrar:hover{
+
+background:#0055aa;
+
+transform:translateY(-2px);
+
+box-shadow:0 10px 20px rgba(0,51,102,.20);
+
+}
+
+#btnEntrar:active{
+
+transform:scale(.98);
+
+}
+
+/* ==========================================================
+   MENSAGENS
+========================================================== */
+
+#mensagem{
+
+margin-top:20px;
+
+text-align:center;
+
+font-size:14px;
+
+font-weight:500;
+
+min-height:20px;
+
+color:#dc3545;
+
+}
+
+/* ==========================================================
+   LOADING
+========================================================== */
+
+.loading{
+
+display:none;
+
+position:fixed;
+
+top:0;
+
+left:0;
+
+width:100%;
+
+height:100%;
+
+background:rgba(255,255,255,.88);
+
+backdrop-filter:blur(4px);
+
+align-items:center;
+
+justify-content:center;
+
+z-index:99999;
+
+}
+
+.loading.ativo{
+
+display:flex;
+
+}
+
+.loading-box{
+
+background:white;
+
+padding:35px;
+
+border-radius:18px;
+
+text-align:center;
+
+box-shadow:0 20px 45px rgba(0,0,0,.18);
+
+max-width:320px;
+
+width:90%;
+
+}
+
+.loading-box h3{
+
+margin:18px 0 10px;
+
+color:#003366;
+
+font-size:22px;
+
+}
+
+.loading-box p{
+
+font-size:14px;
+
+color:#666;
+
+line-height:1.5;
+
+}
+
+.spinner{
+
+width:65px;
+
+height:65px;
+
+margin:auto;
+
+border:6px solid #e5e7eb;
+
+border-top:6px solid #003366;
+
+border-radius:50%;
+
+animation:girar .9s linear infinite;
+
+}
+
+@keyframes girar{
+
+100%{
+
+transform:rotate(360deg);
+
+}
+
+}
+
+/* ==========================================================
+   TOAST
+========================================================== */
+
+.toast{
+
+position:fixed;
+
+bottom:25px;
+
+right:25px;
+
+display:none;
+
+align-items:center;
+
+gap:15px;
+
+background:white;
+
+padding:18px;
+
+border-radius:15px;
+
+box-shadow:0 18px 40px rgba(0,0,0,.18);
+
+border-left:6px solid #003366;
+
+min-width:340px;
+
+z-index:99998;
+
+animation:toastEntrada .3s ease;
+
+}
+
+.toast.ativo{
+
+display:flex;
+
+}
+
+@keyframes toastEntrada{
+
+from{
+
+opacity:0;
+
+transform:translateX(40px);
+
+}
+
+to{
+
+opacity:1;
+
+transform:translateX(0);
+
+}
+
+}
+
+.toast-icone{
+
+font-size:28px;
+
+color:#003366;
+
+}
+
+.toast-texto{
+
+flex:1;
+
+}
+
+.toast-texto span{
+
+display:block;
+
+font-weight:700;
+
+margin-bottom:4px;
+
+color:#003366;
+
+}
+
+.toast-texto p{
+
+font-size:14px;
+
+color:#555;
+
+line-height:1.5;
+
+}
+
+#fecharToast{
+
+background:none;
+
+border:none;
+
+cursor:pointer;
+
+font-size:18px;
+
+color:#777;
+
+transition:.2s;
+
+}
+
+#fecharToast:hover{
+
+color:#dc3545;
+
+}
+
+/* ==========================================================
+   RODAPÉ
+========================================================== */
+
+.rodape{
+
+position:fixed;
+
+bottom:15px;
+
+left:0;
+
+width:100%;
+
+text-align:center;
+
+color:white;
+
+font-size:14px;
+
+line-height:1.8;
+
+padding:0 15px;
+
+}
+
+.rodape strong{
+
+display:block;
+
+font-size:15px;
+
+font-weight:700;
+
+}
+
+/* ==========================================================
+   RESPONSIVIDADE
+========================================================== */
+
+@media(max-width:768px){
+
+.container{
+
+padding:20px;
+
+}
+
+.login-card{
+
+padding:30px 25px;
+
+}
+
+.logo h1{
+
+font-size:34px;
+
+}
+
+.login-card h2{
+
+font-size:24px;
+
+}
+
+.opcoes{
+
+flex-direction:column;
+
+align-items:flex-start;
+
+gap:12px;
+
+}
+
+.toast{
+
+left:15px;
+
+right:15px;
+
+bottom:15px;
+
+min-width:auto;
+
+}
+
+.rodape{
+
+position:relative;
+
+margin-top:30px;
+
+color:white;
+
+}
+
+}
+
+@media(max-width:480px){
+
+body{
+
+overflow:auto;
+
+}
+
+.login-card{
+
+padding:25px 20px;
+
+border-radius:16px;
+
+}
+
+.logo h1{
+
+font-size:30px;
+
+}
+
+.logo span{
+
+font-size:15px;
+
+}
+
+.input input{
+
+height:48px;
+
+font-size:14px;
+
+}
+
+#btnEntrar{
+
+height:50px;
+
+font-size:15px;
+
+}
+
+.loading-box{
+
+padding:25px;
+
+}
+
+.loading-box h3{
+
+font-size:20px;
+
+}
+
+.loading-box p{
+
+font-size:13px;
+
+}
+
+.toast{
+
+padding:15px;
+
+}
+
+}
