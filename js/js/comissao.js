@@ -3,8 +3,9 @@
 // UMES BREJÕES 2026
 //
 // Arquivo: comissao.js
-// Comissão Eleitoral
+// Controle da Comissão Eleitoral
 // ======================================================
+
 
 // ======================================================
 // IMPORTS
@@ -22,13 +23,13 @@ from "./firebase.js";
 import {
 
 collection,
-getDocs,
 doc,
 getDoc,
+getDocs,
+addDoc,
 setDoc,
 updateDoc,
 deleteDoc,
-addDoc,
 query,
 orderBy
 
@@ -48,11 +49,13 @@ from "./ui.js";
 
 import {
 
+abrirModal,
 fecharTodosModais
 
 }
 
 from "./modais.js";
+
 
 // ======================================================
 // VARIÁVEIS
@@ -60,7 +63,7 @@ from "./modais.js";
 
 let membros=[];
 
-let membroSelecionado=null;
+let membroEditando=null;
 
 // ======================================================
 // LOG
@@ -69,8 +72,6 @@ let membroSelecionado=null;
 async function registrarLog(
 
 acao,
-
-usuario,
 
 descricao
 
@@ -84,9 +85,9 @@ collection(db,"logs"),
 
 acao,
 
-usuario,
-
 descricao,
+
+usuario:"Comissão Eleitoral",
 
 data:serverTimestamp()
 
@@ -104,15 +105,9 @@ export async function carregarComissao(){
 
 try{
 
-mostrarLoading(
+mostrarLoading("Carregando comissão...");
 
-"Carregando Comissão Eleitoral..."
-
-);
-
-const consulta=
-
-query(
+const consulta=query(
 
 collection(db,"comissao"),
 
@@ -126,13 +121,13 @@ await getDocs(consulta);
 
 membros=[];
 
-snapshot.forEach(docItem=>{
+snapshot.forEach(doc=>{
 
 membros.push({
 
-id:docItem.id,
+id:doc.id,
 
-...docItem.data()
+...doc.data()
 
 });
 
@@ -142,9 +137,9 @@ renderizarTabela();
 
 esconderLoading();
 
-}catch(erro){
+}catch(e){
 
-console.error(erro);
+console.error(e);
 
 esconderLoading();
 
@@ -152,7 +147,7 @@ mostrarToast(
 
 "Erro",
 
-"Não foi possível carregar a Comissão Eleitoral.",
+"Não foi possível carregar a comissão.",
 
 "erro"
 
@@ -166,21 +161,17 @@ mostrarToast(
 // TABELA
 // ======================================================
 
-function renderizarTabela(){
+function renderizarTabela(lista=membros){
 
 const tbody=
 
-document.getElementById(
-
-"listaComissao"
-
-);
+document.getElementById("listaComissao");
 
 if(!tbody) return;
 
 tbody.innerHTML="";
 
-if(membros.length===0){
+if(lista.length===0){
 
 tbody.innerHTML=
 
@@ -198,9 +189,9 @@ return;
 
 }
 
-membros.forEach(membro=>{
+lista.forEach(membro=>{
 
-tbody.innerHTML +=`
+tbody.innerHTML+=`
 
 <tr>
 
@@ -224,11 +215,7 @@ ${membro.nivel}
 
 <td>
 
-<span class="status status-${membro.ativo ? "homologada" : "indeferida"}">
-
-${membro.ativo ? "Ativo" : "Inativo"}
-
-</span>
+${membro.ativo?"Ativo":"Inativo"}
 
 </td>
 
@@ -236,9 +223,9 @@ ${membro.ativo ? "Ativo" : "Inativo"}
 
 <button
 
-class="btnEditarMembro"
+class="btnEditar"
 
-data-id="${membro.id}">
+onclick="editarMembro('${membro.id}')">
 
 <i class="fa-solid fa-pen"></i>
 
@@ -246,19 +233,9 @@ data-id="${membro.id}">
 
 <button
 
-class="btnSituacao"
+class="btnExcluir"
 
-data-id="${membro.id}">
-
-<i class="fa-solid fa-power-off"></i>
-
-</button>
-
-<button
-
-class="btnExcluirMembro"
-
-data-id="${membro.id}">
+onclick="removerMembro('${membro.id}')">
 
 <i class="fa-solid fa-trash"></i>
 
@@ -271,8 +248,6 @@ data-id="${membro.id}">
 `;
 
 });
-
-ativarEventos();
 
 }
 
@@ -316,15 +291,13 @@ return null;
 
 }
 
-membroSelecionado={
+return{
 
 id:documento.id,
 
 ...documento.data()
 
 };
-
-return membroSelecionado;
 
 }catch(erro){
 
@@ -334,7 +307,7 @@ mostrarToast(
 
 "Erro",
 
-"Não foi possível localizar o membro.",
+"Erro ao buscar o membro.",
 
 "erro"
 
@@ -347,187 +320,37 @@ return null;
 }
 
 // ======================================================
-// CADASTRAR MEMBRO
+// NOVO MEMBRO
 // ======================================================
 
-export async function cadastrarMembro(dados){
+export function novoMembro(){
 
-try{
+membroEditando=null;
 
-mostrarLoading(
+document
 
-"Cadastrando membro..."
+.getElementById("formMembro")
 
-);
+?.reset();
 
-const referencia=
+document
 
-doc(
+.getElementById("modalTituloMembro")
 
-collection(
+.textContent=
 
-db,
+"Novo Membro";
 
-"comissao"
+abrirModal(
 
-)
-
-);
-
-await setDoc(
-
-referencia,
-
-{
-
-...dados,
-
-ativo:true,
-
-criadoEm:serverTimestamp(),
-
-atualizadoEm:serverTimestamp()
-
-}
+"modalMembro"
 
 );
-
-await registrarLog(
-
-"Cadastro",
-
-dados.nome,
-
-"Membro incluído na Comissão Eleitoral."
-
-);
-
-await carregarComissao();
-
-fecharTodosModais();
-
-esconderLoading();
-
-mostrarToast(
-
-"Sucesso",
-
-"Membro cadastrado com sucesso.",
-
-"sucesso"
-
-);
-
-}catch(erro){
-
-console.error(erro);
-
-esconderLoading();
-
-mostrarToast(
-
-"Erro",
-
-"Não foi possível cadastrar o membro.",
-
-"erro"
-
-);
-
-}
 
 }
 
 // ======================================================
-// ATUALIZAR MEMBRO
-// ======================================================
-
-export async function atualizarMembro(
-
-id,
-
-dados
-
-){
-
-try{
-
-mostrarLoading(
-
-"Atualizando cadastro..."
-
-);
-
-await updateDoc(
-
-doc(
-
-db,
-
-"comissao",
-
-id
-
-),
-
-{
-
-...dados,
-
-atualizadoEm:serverTimestamp()
-
-}
-
-);
-
-await registrarLog(
-
-"Edição",
-
-dados.nome,
-
-"Cadastro atualizado."
-
-);
-
-await carregarComissao();
-
-fecharTodosModais();
-
-esconderLoading();
-
-mostrarToast(
-
-"Sucesso",
-
-"Membro atualizado com sucesso.",
-
-"sucesso"
-
-);
-
-}catch(erro){
-
-console.error(erro);
-
-esconderLoading();
-
-mostrarToast(
-
-"Erro",
-
-"Não foi possível atualizar o membro.",
-
-"erro"
-
-);
-
-}
-
-}
-
-// ======================================================
-// MODAL DE EDIÇÃO
+// EDITAR MEMBRO
 // ======================================================
 
 export async function abrirEdicao(id){
@@ -541,6 +364,16 @@ if(!membro){
 return;
 
 }
+
+membroEditando=id;
+
+document.getElementById(
+
+"modalTituloMembro"
+
+).textContent=
+
+"Editar Membro";
 
 document.getElementById(
 
@@ -590,41 +423,77 @@ document.getElementById(
 
 membro.ativo;
 
-document.getElementById(
+abrirModal(
 
-"modalTituloMembro"
+"modalMembro"
 
-).textContent=
-
-"Editar Membro";
-
-document.getElementById(
-
-"btnSalvarMembro"
-
-).dataset.id=id;
+);
 
 }
 
 // ======================================================
-// ALTERAR SITUAÇÃO
+// SALVAR MEMBRO
 // ======================================================
 
-export async function alterarSituacao(
+export async function salvarMembro(){
 
-id,
+const dados={
 
-ativo
+nome:
 
-){
+document.getElementById("membroNome").value.trim(),
+
+cargo:
+
+document.getElementById("membroCargo").value,
+
+nivel:
+
+document.getElementById("membroNivel").value,
+
+email:
+
+document.getElementById("membroEmail").value.trim(),
+
+telefone:
+
+document.getElementById("membroTelefone").value.trim(),
+
+ativo:
+
+document.getElementById("membroAtivo").checked,
+
+atualizadoEm:
+
+serverTimestamp()
+
+};
+
+if(!dados.nome){
+
+mostrarToast(
+
+"Atenção",
+
+"Informe o nome do membro.",
+
+"alerta"
+
+);
+
+return;
+
+}
 
 try{
 
 mostrarLoading(
 
-"Atualizando situação..."
+"Salvando membro..."
 
 );
+
+if(membroEditando){
 
 await updateDoc(
 
@@ -634,39 +503,59 @@ db,
 
 "comissao",
 
-id
+membroEditando
+
+),
+
+dados
+
+);
+
+await registrarLog(
+
+"Edição",
+
+`Membro ${dados.nome} atualizado.`
+
+);
+
+}else{
+
+await addDoc(
+
+collection(
+
+db,
+
+"comissao"
 
 ),
 
 {
 
-ativo,
+...dados,
 
-atualizadoEm:serverTimestamp()
+criadoEm:
+
+serverTimestamp()
 
 }
 
 );
 
-const membro=
-
-await buscarMembro(id);
-
 await registrarLog(
 
-"Situação",
+"Cadastro",
 
-membro?.nome || id,
-
-ativo
-
-? "Membro ativado."
-
-: "Membro inativado."
+`Novo membro ${dados.nome}.`
 
 );
 
+}
+
 await carregarComissao();
+
+fecharTodosModais();
 
 esconderLoading();
 
@@ -674,11 +563,7 @@ mostrarToast(
 
 "Sucesso",
 
-ativo
-
-? "Membro ativado."
-
-: "Membro inativado.",
+"Membro salvo com sucesso.",
 
 "sucesso"
 
@@ -694,7 +579,7 @@ mostrarToast(
 
 "Erro",
 
-"Não foi possível alterar a situação.",
+"Não foi possível salvar o membro.",
 
 "erro"
 
@@ -705,14 +590,18 @@ mostrarToast(
 }
 
 // ======================================================
+// FUNÇÕES GLOBAIS
+// ======================================================
+
+window.editarMembro=
+
+abrirEdicao;
+
+// ======================================================
 // EXCLUIR MEMBRO
 // ======================================================
 
-export async function excluirMembro(
-
-id
-
-){
+export async function removerMembro(id){
 
 try{
 
@@ -730,7 +619,7 @@ const confirmar=
 
 confirm(
 
-`Deseja realmente excluir ${membro.nome}?`
+`Deseja excluir o membro "${membro.nome}"?`
 
 );
 
@@ -764,9 +653,7 @@ await registrarLog(
 
 "Exclusão",
 
-membro.nome,
-
-"Membro removido da Comissão."
+`Membro ${membro.nome} excluído.`
 
 );
 
@@ -794,7 +681,7 @@ mostrarToast(
 
 "Erro",
 
-"Não foi possível excluir o membro.",
+"Não foi possível excluir.",
 
 "erro"
 
@@ -805,52 +692,16 @@ mostrarToast(
 }
 
 // ======================================================
-// EVENTOS
+// ATIVAR / INATIVAR
 // ======================================================
 
-function ativarEventos(){
+export async function alterarSituacao(id){
 
-document
-
-.querySelectorAll(
-
-".btnEditarMembro"
-
-)
-
-.forEach(botao=>{
-
-botao.onclick=()=>{
-
-abrirEdicao(
-
-botao.dataset.id
-
-);
-
-};
-
-});
-
-document
-
-.querySelectorAll(
-
-".btnSituacao"
-
-)
-
-.forEach(botao=>{
-
-botao.onclick=async()=>{
+try{
 
 const membro=
 
-await buscarMembro(
-
-botao.dataset.id
-
-);
+await buscarMembro(id);
 
 if(!membro){
 
@@ -858,73 +709,63 @@ return;
 
 }
 
-alterarSituacao(
+await updateDoc(
 
-membro.id,
+doc(
 
-!membro.ativo
+db,
 
-);
+"comissao",
 
-};
+id
 
-});
+),
 
-document
+{
 
-.querySelectorAll(
+ativo:!membro.ativo,
 
-".btnExcluirMembro"
-
-)
-
-.forEach(botao=>{
-
-botao.onclick=()=>{
-
-excluirMembro(
-
-botao.dataset.id
-
-);
-
-};
-
-});
+atualizadoEm:serverTimestamp()
 
 }
 
-// ======================================================
-// NOVO MEMBRO
-// ======================================================
+);
 
-export function novoMembro(){
+await registrarLog(
 
-membroSelecionado=null;
+"Situação",
 
-document.getElementById(
-
-"modalTituloMembro"
-
-).textContent=
-
-"Novo Membro";
-
-document.getElementById(
-
-"formMembro"
-
-).reset();
-
-document.getElementById(
-
-"btnSalvarMembro"
-
-).removeAttribute(
-
-"data-id"
+`Membro ${membro.nome} ${!membro.ativo ? "ativado" : "inativado"}.`
 
 );
+
+await carregarComissao();
+
+mostrarToast(
+
+"Sucesso",
+
+"Situação atualizada.",
+
+"sucesso"
+
+);
+
+}catch(erro){
+
+console.error(erro);
+
+mostrarToast(
+
+"Erro",
+
+"Não foi possível alterar a situação.",
+
+"erro"
+
+);
+
+}
 
 }
 
@@ -942,13 +783,13 @@ texto
 
 .trim();
 
-const resultado=
+const lista=
 
-membros.filter(membro=>{
+membros.filter(m=>{
 
 return(
 
-(membro.nome||"")
+(m.nome||"")
 
 .toLowerCase()
 
@@ -956,7 +797,7 @@ return(
 
 ||
 
-(membro.cargo||"")
+(m.cargo||"")
 
 .toLowerCase()
 
@@ -964,7 +805,7 @@ return(
 
 ||
 
-(membro.email||"")
+(m.nivel||"")
 
 .toLowerCase()
 
@@ -972,7 +813,7 @@ return(
 
 ||
 
-(membro.nivel||"")
+(m.email||"")
 
 .toLowerCase()
 
@@ -982,19 +823,19 @@ return(
 
 });
 
-renderizarTabela(resultado);
+renderizarTabela(lista);
 
 }
 
 // ======================================================
-// FILTRAR SITUAÇÃO
+// FILTRO
 // ======================================================
 
-export function filtrarMembros(filtro){
+export function filtrarMembros(tipo){
 
 let lista=[...membros];
 
-switch(filtro){
+switch(tipo){
 
 case "Ativos":
 
@@ -1020,63 +861,17 @@ m=>!m.ativo
 
 break;
 
-default:
-
-break;
-
 }
 
 renderizarTabela(lista);
 
 }
 
-function renderizarTabela(
-
-lista=membros
-
-){
-
-const tbody=
-
-document.getElementById(
-
-"listaComissao"
-
-);
-
-if(!tbody) return;
-
-tbody.innerHTML="";
-
-if(lista.length===0){
-
-tbody.innerHTML=
-
-`
-
-<tr>
-
-<td colspan="5">
-
-Nenhum membro encontrado.
-
-</td>
-
-</tr>
-
-`;
-
-return;
-
-}
-
-lista.forEach(membro=>{
-
 // ======================================================
-// ATUALIZAÇÃO AUTOMÁTICA
+// AUTO UPDATE
 // ======================================================
 
-export function iniciarAtualizacaoComissao(){
+export function iniciarComissao(){
 
 carregarComissao();
 
@@ -1091,6 +886,22 @@ carregarComissao,
 }
 
 // ======================================================
+// FUNÇÕES GLOBAIS
+// ======================================================
+
+window.editarMembro=
+
+abrirEdicao;
+
+window.removerMembro=
+
+removerMembro;
+
+window.alterarSituacao=
+
+alterarSituacao;
+
+// ======================================================
 // EXPORTS
 // ======================================================
 
@@ -1100,22 +911,20 @@ carregarComissao,
 
 buscarMembro,
 
-cadastrarMembro,
-
-atualizarMembro,
-
-alterarSituacao,
-
-excluirMembro,
+novoMembro,
 
 abrirEdicao,
 
-novoMembro,
+salvarMembro,
+
+removerMembro,
+
+alterarSituacao,
 
 pesquisarMembros,
 
 filtrarMembros,
 
-iniciarAtualizacaoComissao
+iniciarComissao
 
 };
