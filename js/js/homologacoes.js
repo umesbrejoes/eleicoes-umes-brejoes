@@ -23,6 +23,7 @@ import {
 
 doc,
 getDoc,
+getDocs,
 updateDoc,
 collection,
 addDoc,
