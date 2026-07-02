@@ -124,6 +124,14 @@ mostrarToast
 
 from "./ui.js";
 
+import {
+
+verificarSessaoAdmin,
+sair
+
+}
+
+from "./auth.js";
 
 // ======================================================
 // INICIALIZAÇÃO
