@@ -10,10 +10,11 @@
 // IMPORTS
 // ======================================================
 
-import {
+import{
 
 fazerLogin,
-verificarSessao
+
+verificarSessaoLogin
 
 }
 
@@ -39,7 +40,7 @@ document.getElementById("mostrarSenha");
 // VERIFICAR SESSÃO
 // ======================================================
 
-verificarSessao();
+verificarSessaoLogin();
 
 // ======================================================
 // MOSTRAR / OCULTAR SENHA
