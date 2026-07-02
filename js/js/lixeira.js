@@ -29,8 +29,7 @@ doc,
 getDoc,
 updateDoc,
 deleteDoc,
-addDoc,
-arrayUnion
+addDoc
 
 }
 
@@ -48,21 +47,27 @@ from "./ui.js";
 
 import {
 
+fecharTodosModais
+
+}
+
+from "./modais.js";
+
+import {
+
+adicionarHistorico
+
+}
+
+from "./historico.js";
+
+import {
+
 formatarDataHora
 
 }
 
 from "./util.js";
-
-// ======================================================
-// VARIÁVEIS
-// ======================================================
-
-let lixeira=[];
-
-let paginaAtual=1;
-
-const registrosPagina=10;
 
 // ======================================================
 // LOG
@@ -101,48 +106,70 @@ data:serverTimestamp()
 }
 
 // ======================================================
-// CARREGAR LIXEIRA
+// RESTAURAR
 // ======================================================
 
-export async function carregarLixeira(){
+export async function restaurarInscricao(id){
 
 try{
 
 mostrarLoading(
 
-"Carregando lixeira..."
+"Restaurando inscrição..."
 
 );
 
-const consulta=query(
+await updateDoc(
 
-collection(db,"inscricoes"),
+doc(db,"inscricoes",id),
 
-where("status","==","Lixeira")
+{
+
+status:"Pendente",
+
+restauradaEm:serverTimestamp()
+
+}
 
 );
 
-const snapshot=
+await adicionarHistorico(
 
-await getDocs(consulta);
+id,
 
-lixeira=[];
+"Restauração",
 
-snapshot.forEach(docItem=>{
+"Comissão Eleitoral",
 
-lixeira.push({
+"Inscrição restaurada da lixeira."
 
-id:docItem.id,
+);
 
-...docItem.data()
+await registrarLog(
 
-});
+"Restauração",
 
-});
+id,
 
-renderizarTabela();
+"Inscrição restaurada."
+
+);
+
+await carregarLixeira();
 
 esconderLoading();
+
+fecharTodosModais();
+
+mostrarToast(
+
+"Sucesso",
+
+"Inscrição restaurada.",
+
+"sucesso"
+
+);
 
 }catch(erro){
 
@@ -154,7 +181,7 @@ mostrarToast(
 
 "Erro",
 
-"Não foi possível carregar a lixeira.",
+"Não foi possível restaurar.",
 
 "erro"
 
@@ -165,10 +192,110 @@ mostrarToast(
 }
 
 // ======================================================
-// TABELA
+// EXCLUSÃO DEFINITIVA
 // ======================================================
 
-function renderizarTabela(){
+export async function excluirPermanentemente(id){
+
+try{
+
+mostrarLoading(
+
+"Excluindo inscrição..."
+
+);
+
+const documento=
+
+await getDoc(
+
+doc(db,"inscricoes",id)
+
+);
+
+if(!documento.exists()){
+
+throw new Error(
+
+"Inscrição não encontrada."
+
+);
+
+}
+
+await deleteDoc(
+
+doc(db,"inscricoes",id)
+
+);
+
+await registrarLog(
+
+"Exclusão Permanente",
+
+id,
+
+"Inscrição excluída definitivamente."
+
+);
+
+esconderLoading();
+
+fecharTodosModais();
+
+mostrarToast(
+
+"Sucesso",
+
+"Inscrição excluída definitivamente.",
+
+"sucesso"
+
+);
+
+await carregarLixeira();
+
+}catch(erro){
+
+console.error(erro);
+
+esconderLoading();
+
+mostrarToast(
+
+"Erro",
+
+erro.message,
+
+"erro"
+
+);
+
+}
+
+}
+
+// ======================================================
+// CARREGAR LIXEIRA
+// ======================================================
+
+export async function carregarLixeira(){
+
+try{
+
+const snapshot=
+
+await getDocs(
+
+query(
+
+collection(db,"inscricoes"),
+
+where("status","==","Lixeira")
+
+)
+
+);
 
 const tbody=
 
@@ -182,7 +309,7 @@ if(!tbody) return;
 
 tbody.innerHTML="";
 
-if(lixeira.length===0){
+if(snapshot.empty){
 
 tbody.innerHTML=
 
@@ -200,39 +327,31 @@ return;
 
 }
 
-lixeira.forEach(item=>{
+snapshot.forEach(docItem=>{
+
+const dados=
+
+docItem.data();
 
 tbody.innerHTML +=`
 
 <tr>
 
-<td>
+<td>${dados.numeroInscricao}</td>
 
-${item.numeroInscricao}
+<td>${dados.chapa?.nome || "-"}</td>
 
-</td>
+<td>${dados.presidente?.nome || "-"}</td>
 
-<td>
-
-${item.chapa.nome}
-
-</td>
+<td>${formatarDataHora(dados.dataHora)}</td>
 
 <td>
 
-${item.presidente.nome}
-
-</td>
-
-<td>
-
-${formatarDataHora(item.dataHora)}
-
-</td>
-
-<td>
+<span class="status status-lixeira">
 
 Lixeira
+
+</span>
 
 </td>
 
@@ -242,9 +361,9 @@ Lixeira
 
 class="btnRestaurar"
 
-data-id="${item.id}">
+data-id="${docItem.id}">
 
-Restaurar
+<i class="fa-solid fa-trash-arrow-up"></i>
 
 </button>
 
@@ -256,9 +375,9 @@ Restaurar
 
 class="btnExcluir"
 
-data-id="${item.id}">
+data-id="${docItem.id}">
 
-Excluir
+<i class="fa-solid fa-trash-can"></i>
 
 </button>
 
@@ -272,133 +391,21 @@ Excluir
 
 ativarEventos();
 
-}
+}catch(erro){
 
-// ======================================================
-// RESTAURAR
-// ======================================================
-
-export async function restaurarInscricao(id){
-
-const referencia=
-
-doc(
-
-db,
-
-"inscricoes",
-
-id
-
-);
-
-await updateDoc(
-
-referencia,
-
-{
-
-status:"Pendente",
-
-restauradaEm:serverTimestamp(),
-
-historico:arrayUnion({
-
-acao:"Restaurada",
-
-usuario:"Comissão Eleitoral",
-
-data:new Date()
-
-})
-
-}
-
-);
-
-await registrarLog(
-
-"Restauração",
-
-id,
-
-"Inscrição restaurada."
-
-);
+console.error(erro);
 
 mostrarToast(
 
-"Sucesso",
+"Erro",
 
-"Inscrição restaurada.",
+"Não foi possível carregar a lixeira.",
 
-"sucesso"
+"erro"
 
 );
-
-carregarLixeira();
 
 }
-
-// ======================================================
-// EXCLUSÃO DEFINITIVA
-// ======================================================
-
-export async function excluirPermanentemente(id){
-
-const documento=
-
-await getDoc(
-
-doc(
-
-db,
-
-"inscricoes",
-
-id
-
-)
-
-);
-
-if(!documento.exists()) return;
-
-await deleteDoc(
-
-doc(
-
-db,
-
-"inscricoes",
-
-id
-
-)
-
-);
-
-await registrarLog(
-
-"Exclusão Permanente",
-
-id,
-
-"Inscrição removida definitivamente."
-
-);
-
-mostrarToast(
-
-"Sucesso",
-
-"Inscrição excluída permanentemente.",
-
-"sucesso"
-
-);
-
-carregarLixeira();
 
 }
 
@@ -455,24 +462,6 @@ botao.dataset.id
 }
 
 // ======================================================
-// AUTO UPDATE
-// ======================================================
-
-export function iniciarLixeiraAutomatica(){
-
-carregarLixeira();
-
-setInterval(
-
-carregarLixeira,
-
-60000
-
-);
-
-}
-
-// ======================================================
 // EXPORTS
 // ======================================================
 
@@ -482,8 +471,6 @@ carregarLixeira,
 
 restaurarInscricao,
 
-excluirPermanentemente,
-
-iniciarLixeiraAutomatica
+excluirPermanentemente
 
 };
