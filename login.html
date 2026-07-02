@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>
+
+Login • Comissão Eleitoral
+
+</title>
+
+<link
+rel="stylesheet"
+href="css/login.css">
+
+<link
+rel="preconnect"
+href="https://fonts.googleapis.com">
+
+<link
+rel="preconnect"
+href="https://fonts.gstatic.com"
+crossorigin>
+
+<link
+href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+rel="stylesheet">
+
+<link
+rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+</head>
+
+<body>
+
+<div class="background"></div>
+
+<div class="container">
+
+<div class="login-card">
+
+<div class="logo">
+
+<h1>
+
+UMES
+
+</h1>
+
+<span>
+
+Brejões
+
+</span>
+
+</div>
+
+<h2>
+
+Comissão Eleitoral
+
+</h2>
+
+<p>
+
+Sistema Oficial das Eleições 2026
+
+</p>
+
+<form id="formLogin">
+
+<div class="campo">
+
+<label>
+
+E-mail
+
+</label>
+
+<div class="input">
+
+<i class="fa-solid fa-envelope"></i>
+
+<input
+
+type="email"
+
+id="email"
+
+placeholder="Digite seu e-mail"
+
+required>
+
+</div>
+
+</div>
+
+<div class="campo">
+
+<label>
+
+Senha
+
+</label>
+
+<div class="input">
+
+<i class="fa-solid fa-lock"></i>
+
+<input
+
+type="password"
+
+id="senha"
+
+placeholder="Digite sua senha"
+
+required>
+
+<button
+
+type="button"
+
+id="mostrarSenha"
+
+class="icone">
+
+<i class="fa-solid fa-eye"></i>
+
+</button>
+
+</div>
+
+</div>
+
+<div class="opcoes">
+
+<label>
+
+<input
+type="checkbox"
+id="lembrar">
+
+Lembrar-me
+
+</label>
+
+<a href="#">
+
+Esqueci minha senha
+
+</a>
+
+</div>
+
+<button
+
+type="submit"
+
+id="btnEntrar">
+
+<i class="fa-solid fa-right-to-bracket"></i>
+
+Entrar
+
+</button>
+
+</form>
+
+<div id="mensagem"></div>
+
+</div>
+
+</div>
+
+<!-- ========================================== -->
+<!-- TELA DE CARREGAMENTO -->
+<!-- ========================================== -->
+
+<div id="loading" class="loading">
+
+    <div class="loading-box">
+
+        <div class="spinner"></div>
+
+        <h3>
+
+            Entrando...
+
+        </h3>
+
+        <p>
+
+            Aguarde enquanto verificamos suas credenciais.
+
+        </p>
+
+    </div>
+
+</div>
+
+<!-- ========================================== -->
+<!-- TOAST -->
+<!-- ========================================== -->
+
+<div id="toast" class="toast">
+
+    <div class="toast-icone">
+
+        <i class="fa-solid fa-circle-info"></i>
+
+    </div>
+
+    <div class="toast-texto">
+
+        <span id="toastTitulo">
+
+            Sistema
+
+        </span>
+
+        <p id="toastMensagem">
+
+            Mensagem do sistema.
+
+        </p>
+
+    </div>
+
+    <button id="fecharToast">
+
+        <i class="fa-solid fa-xmark"></i>
+
+    </button>
+
+</div>
+
+<!-- ========================================== -->
+<!-- RODAPÉ -->
+<!-- ========================================== -->
+
+<footer class="rodape">
+
+    <strong>
+
+        União Municipal dos e das Estudantes de Brejões
+
+    </strong>
+
+    <p>
+
+        Sistema Oficial do Processo Eleitoral • 2026
+
+    </p>
+
+    <small>
+
+        Comissão Eleitoral • Acesso Restrito
+
+    </small>
+
+</footer>
+
+<!-- ========================================== -->
+<!-- JAVASCRIPT -->
+<!-- ========================================== -->
+
+<script type="module" src="js/login.js"></script>
+
+</body>
+
+</html>
