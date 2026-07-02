@@ -1218,6 +1218,30 @@ serverTimestamp()
 
 );
 
+await updateDoc(
+
+doc(db,"inscricoes",inscricaoSelecionada),
+
+{
+
+status:"Correção Solicitada",
+
+motivoCorrecao:texto,
+
+analisadoPor:usuarioAtual,
+
+ultimaAtualizacao:serverTimestamp()
+
+}
+
+);
+
+// Adicione aqui
+await adicionarHistorico(
+inscricaoSelecionada,
+"Solicitada correção da documentação."
+);
+
 await registrarLog(
 
 "Correção",
@@ -1306,6 +1330,11 @@ serverTimestamp()
 
 );
 
+await adicionarHistorico(
+inscricaoSelecionada,
+"Inscrição indeferida."
+);
+
 await registrarLog(
 
 "Indeferimento",
@@ -1388,6 +1417,11 @@ serverTimestamp()
 
 }
 
+);
+
+await adicionarHistorico(
+inscricaoSelecionada,
+"Inscrição enviada para a lixeira."
 );
 
 await deleteDoc(
