@@ -3,7 +3,7 @@
 // UMES BREJÕES 2026
 //
 // Arquivo: realtime.js
-// Atualização em Tempo Real
+// Atualizações em Tempo Real
 // ======================================================
 
 // ======================================================
@@ -21,6 +21,7 @@ from "./firebase.js";
 import {
 
 collection,
+doc,
 onSnapshot
 
 }
@@ -85,6 +86,14 @@ from "./resultados.js";
 
 import {
 
+carregarAuditoria
+
+}
+
+from "./auditoria.js";
+
+import {
+
 carregarLogs
 
 }
@@ -99,16 +108,27 @@ carregarLixeira
 
 from "./lixeira.js";
 
+import {
+
+carregarConfiguracoes
+
+}
+
+from "./configuracoes.js";
 
 // ======================================================
-// INICIAR
+// LISTENERS
 // ======================================================
 
-export function iniciarRealtime(){
+const listeners=[];
 
-// ----------------------
-// INSCRIÇÕES
-// ----------------------
+// ======================================================
+// DASHBOARD
+// ======================================================
+
+function observarDashboard(){
+
+listeners.push(
 
 onSnapshot(
 
@@ -118,39 +138,13 @@ collection(db,"inscricoes"),
 
 carregarDashboard();
 
-carregarInscricoes();
-
-carregarHomologacoes();
-
-carregarResultados();
-
-carregarLixeira();
-
 }
+
+)
 
 );
 
-// ----------------------
-// ELEITORES
-// ----------------------
-
-onSnapshot(
-
-collection(db,"eleitores"),
-
-()=>{
-
-carregarDashboard();
-
-carregarEleitores();
-
-}
-
-);
-
-// ----------------------
-// VOTOS
-// ----------------------
+listeners.push(
 
 onSnapshot(
 
@@ -160,17 +154,63 @@ collection(db,"votos"),
 
 carregarDashboard();
 
-carregarResultados();
-
-carregarVotacao();
-
 }
+
+)
 
 );
 
-// ----------------------
+listeners.push(
+
+onSnapshot(
+
+collection(db,"eleitores"),
+
+()=>{
+
+carregarDashboard();
+
+}
+
+)
+
+);
+
+}
+
+// ======================================================
+// INSCRIÇÕES
+// ======================================================
+
+function observarInscricoes(){
+
+listeners.push(
+
+onSnapshot(
+
+collection(db,"inscricoes"),
+
+()=>{
+
+carregarInscricoes();
+
+carregarHomologacoes();
+
+}
+
+)
+
+);
+
+}
+
+// ======================================================
 // COMISSÃO
-// ----------------------
+// ======================================================
+
+function observarComissao(){
+
+listeners.push(
 
 onSnapshot(
 
@@ -180,15 +220,85 @@ collection(db,"comissao"),
 
 carregarComissao();
 
-carregarDashboard();
-
 }
+
+)
 
 );
 
-// ----------------------
-// LOGS
-// ----------------------
+}
+
+// ======================================================
+// VOTAÇÃO
+// ======================================================
+
+function observarVotacao(){
+
+listeners.push(
+
+onSnapshot(
+
+doc(db,"configuracoes","votacao"),
+
+()=>{
+
+carregarVotacao();
+
+}
+
+)
+
+);
+
+listeners.push(
+
+onSnapshot(
+
+collection(db,"votos"),
+
+()=>{
+
+carregarResultados();
+
+}
+
+)
+
+);
+
+}
+
+// ======================================================
+// ELEITORES
+// ======================================================
+
+function observarEleitores(){
+
+listeners.push(
+
+onSnapshot(
+
+collection(db,"eleitores"),
+
+()=>{
+
+carregarEleitores();
+
+}
+
+)
+
+);
+
+}
+
+// ======================================================
+// AUDITORIA
+// ======================================================
+
+function observarLogs(){
+
+listeners.push(
 
 onSnapshot(
 
@@ -198,18 +308,112 @@ collection(db,"logs"),
 
 carregarLogs();
 
+carregarAuditoria();
+
 }
+
+)
 
 );
 
 }
 
 // ======================================================
-// EXPORT
+// LIXEIRA
+// ======================================================
+
+function observarLixeira(){
+
+listeners.push(
+
+onSnapshot(
+
+collection(db,"lixeira"),
+
+()=>{
+
+carregarLixeira();
+
+}
+
+)
+
+);
+
+}
+
+// ======================================================
+// CONFIGURAÇÕES
+// ======================================================
+
+function observarConfiguracoes(){
+
+listeners.push(
+
+onSnapshot(
+
+doc(db,"configuracoes","sistema"),
+
+()=>{
+
+carregarConfiguracoes();
+
+}
+
+)
+
+);
+
+}
+
+// ======================================================
+// INICIAR
+// ======================================================
+
+export function iniciarRealtime(){
+
+observarDashboard();
+
+observarInscricoes();
+
+observarComissao();
+
+observarVotacao();
+
+observarEleitores();
+
+observarLogs();
+
+observarLixeira();
+
+observarConfiguracoes();
+
+}
+
+// ======================================================
+// FINALIZAR
+// ======================================================
+
+export function pararRealtime(){
+
+listeners.forEach(
+
+cancelar=>cancelar()
+
+);
+
+listeners.length=0;
+
+}
+
+// ======================================================
+// EXPORTS
 // ======================================================
 
 export default{
 
-iniciarRealtime
+iniciarRealtime,
+
+pararRealtime
 
 };
