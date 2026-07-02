@@ -22,12 +22,10 @@ from "./firebase.js";
 import {
 
 doc,
-getDoc,
 getDocs,
 updateDoc,
 collection,
-addDoc,
-arrayUnion
+addDoc
 
 }
 
@@ -50,6 +48,14 @@ fecharTodosModais
 }
 
 from "./modais.js";
+
+import {
+
+adicionarHistorico
+
+}
+
+from "./historico.js";
 
 // ======================================================
 // LOG
@@ -109,21 +115,9 @@ mostrarLoading(
 
 );
 
-const referencia=
-
-doc(
-
-db,
-
-"inscricoes",
-
-id
-
-);
-
 await updateDoc(
 
-referencia,
+doc(db,"inscricoes",id),
 
 {
 
@@ -133,21 +127,21 @@ numeroChapa,
 
 observacaoHomologacao:observacao,
 
-dataHomologacao:serverTimestamp(),
-
-historico:arrayUnion({
-
-acao:"Homologada",
-
-usuario:"Comissão Eleitoral",
-
-data:new Date(),
-
-observacao
-
-})
+dataHomologacao:serverTimestamp()
 
 }
+
+);
+
+await adicionarHistorico(
+
+id,
+
+"Homologação",
+
+"Comissão Eleitoral",
+
+observacao || "Inscrição homologada."
 
 );
 
@@ -161,6 +155,8 @@ id,
 
 );
 
+await carregarHomologacoes();
+
 esconderLoading();
 
 fecharTodosModais();
@@ -169,7 +165,7 @@ mostrarToast(
 
 "Sucesso",
 
-"Inscrição homologada.",
+"Inscrição homologada com sucesso.",
 
 "sucesso"
 
@@ -185,7 +181,7 @@ mostrarToast(
 
 "Erro",
 
-"Não foi possível homologar.",
+"Não foi possível homologar a inscrição.",
 
 "erro"
 
@@ -195,272 +191,3 @@ mostrarToast(
 
 }
 
-// ======================================================
-// CORREÇÃO
-// ======================================================
-
-export async function solicitarCorrecao(
-
-id,
-
-texto,
-
-prazo
-
-){
-
-const referencia=
-
-doc(
-
-db,
-
-"inscricoes",
-
-id
-
-);
-
-await updateDoc(
-
-referencia,
-
-{
-
-status:"Correção Solicitada",
-
-correcao:texto,
-
-prazoCorrecao:prazo,
-
-historico:arrayUnion({
-
-acao:"Correção solicitada",
-
-usuario:"Comissão Eleitoral",
-
-data:new Date(),
-
-descricao:texto
-
-})
-
-}
-
-);
-
-await registrarLog(
-
-"Correção",
-
-id,
-
-texto
-
-);
-
-mostrarToast(
-
-"Sucesso",
-
-"Correção solicitada.",
-
-"sucesso"
-
-);
-
-}
-
-// ======================================================
-// INDEFERIMENTO
-// ======================================================
-
-export async function indeferirInscricao(
-
-id,
-
-motivo,
-
-fundamentacao
-
-){
-
-const referencia=
-
-doc(
-
-db,
-
-"inscricoes",
-
-id
-
-);
-
-await updateDoc(
-
-referencia,
-
-{
-
-status:"Indeferida",
-
-motivoIndeferimento:motivo,
-
-fundamentacao,
-
-dataIndeferimento:serverTimestamp(),
-
-historico:arrayUnion({
-
-acao:"Indeferida",
-
-usuario:"Comissão Eleitoral",
-
-data:new Date(),
-
-descricao:motivo
-
-})
-
-}
-
-);
-
-await registrarLog(
-
-"Indeferimento",
-
-id,
-
-motivo
-
-);
-
-mostrarToast(
-
-"Sucesso",
-
-"Inscrição indeferida.",
-
-"sucesso"
-
-);
-
-}
-
-// ======================================================
-// LISTAR HOMOLOGAÇÕES
-// ======================================================
-
-export async function carregarHomologacoes(){
-
-const snapshot=
-
-await getDocs(
-
-collection(
-
-db,
-
-"inscricoes"
-
-)
-
-);
-
-const tbody=
-
-document.getElementById(
-
-"listaHomologacoes"
-
-);
-
-if(!tbody) return;
-
-tbody.innerHTML="";
-
-snapshot.forEach(docItem=>{
-
-const dados=
-
-docItem.data();
-
-tbody.innerHTML +=`
-
-<tr>
-
-<td>
-
-${dados.numeroInscricao}
-
-</td>
-
-<td>
-
-${dados.chapa.nome}
-
-</td>
-
-<td>
-
-${dados.presidente.nome}
-
-</td>
-
-<td>
-
-${dados.status}
-
-</td>
-
-<td>
-
--
-
-</td>
-
-<td>
-
--
-
-</td>
-
-<td>
-
-<button
-
-class="btnVisualizar"
-
-data-id="${docItem.id}">
-
-Visualizar
-
-</button>
-
-</td>
-
-</tr>
-
-`;
-
-});
-
-}
-
-// ======================================================
-// EXPORTS
-// ======================================================
-
-export default{
-
-carregarHomologacoes,
-
-homologarInscricao,
-
-solicitarCorrecao,
-
-indeferirInscricao
-
-};
