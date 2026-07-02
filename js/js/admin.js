@@ -145,6 +145,8 @@ async ()=>{
 
 try{
 
+verificarSessaoAdmin();
+  
 inicializarModais();
 
 await carregarDashboard();
