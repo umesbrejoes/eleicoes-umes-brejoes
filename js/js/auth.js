@@ -233,7 +233,35 @@ window.location.href="login.html";
 // SESSÃO
 // ======================================================
 
-export function verificarSessao(){
+// ======================================================
+// SESSÃO LOGIN
+// ======================================================
+
+export function verificarSessaoLogin(){
+
+onAuthStateChanged(
+
+auth,
+
+(usuario)=>{
+
+if(usuario){
+
+window.location.href="admin.html";
+
+}
+
+}
+
+);
+
+}
+
+// ======================================================
+// SESSÃO ADMIN
+// ======================================================
+
+export function verificarSessaoAdmin(){
 
 onAuthStateChanged(
 
@@ -246,6 +274,80 @@ if(!usuario){
 window.location.href="login.html";
 
 return;
+
+}
+
+const documento=
+
+await getDoc(
+
+doc(
+
+db,
+
+"comissao",
+
+usuario.uid
+
+)
+
+);
+
+if(!documento.exists()){
+
+await signOut(auth);
+
+window.location.href="login.html";
+
+return;
+
+}
+
+usuarioAtual={
+
+uid:usuario.uid,
+
+...documento.data()
+
+};
+
+const nome=
+
+document.getElementById(
+
+"nomeUsuario"
+
+);
+
+if(nome){
+
+nome.textContent=
+
+usuarioAtual.nome;
+
+}
+
+const cargo=
+
+document.getElementById(
+
+"cargoUsuario"
+
+);
+
+if(cargo){
+
+cargo.textContent=
+
+usuarioAtual.cargo ||
+
+"Comissão Eleitoral";
+
+}
+
+}
+
+);
 
 }
 
@@ -343,7 +445,9 @@ fazerLogin,
 
 sair,
 
-verificarSessao,
+verificarSessaoLogin,
+
+verificarSessaoAdmin,
 
 obterUsuario,
 
