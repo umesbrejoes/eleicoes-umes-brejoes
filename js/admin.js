@@ -1117,6 +1117,11 @@ serverTimestamp()
 
 );
 
+await adicionarHistorico(
+inscricaoSelecionada,
+"Inscrição homologada."
+);
+
 await registrarLog(
 
 "Homologação",
@@ -1823,3 +1828,311 @@ pdf.save(
 );
 
 }
+
+import {
+collection,
+doc,
+getDoc,
+getDocs,
+setDoc,
+addDoc,
+updateDoc,
+deleteDoc,
+query,
+where,
+orderBy,
+limit,
+onSnapshot
+}
+from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+
+
+// ======================================================
+// ATUALIZAÇÃO EM TEMPO REAL
+// ======================================================
+
+function iniciarTempoReal(){
+
+onSnapshot(
+
+collection(db,"inscricoes"),
+
+async()=>{
+
+await carregarDashboard();
+
+await carregarInscricoes();
+
+atualizarSincronizacao();
+
+}
+
+);
+
+onSnapshot(
+
+collection(db,"votos"),
+
+async()=>{
+
+await carregarDashboard();
+
+}
+
+);
+
+onSnapshot(
+
+collection(db,"eleitores"),
+
+async()=>{
+
+await carregarDashboard();
+
+}
+
+);
+
+}
+
+iniciarTempoReal();
+
+// ======================================================
+// ABRIR VOTAÇÃO
+// ======================================================
+
+window.abrirVotacao = async function(){
+
+try{
+
+await setDoc(
+
+doc(db,"configuracoes","eleicao"),
+
+{
+
+aberta:true,
+
+ultimaAlteracao:serverTimestamp()
+
+},
+
+{merge:true}
+
+);
+
+await registrarLog(
+
+"Votação",
+
+"Eleição",
+
+"Votação aberta."
+
+);
+
+mostrarToast(
+
+"Sucesso",
+
+"Votação aberta."
+
+);
+
+}catch(erro){
+
+console.error(erro);
+
+}
+
+}
+
+// ======================================================
+// ENCERRAR VOTAÇÃO
+// ======================================================
+
+window.encerrarVotacao = async function(){
+
+const confirmar =
+confirm(
+
+"Deseja realmente encerrar a votação?"
+
+);
+
+if(!confirmar){
+
+return;
+
+}
+
+try{
+
+await setDoc(
+
+doc(db,"configuracoes","eleicao"),
+
+{
+
+aberta:false,
+
+ultimaAlteracao:serverTimestamp()
+
+},
+
+{merge:true}
+
+);
+
+await registrarLog(
+
+"Votação",
+
+"Eleição",
+
+"Votação encerrada."
+
+);
+
+mostrarToast(
+
+"Sucesso",
+
+"Votação encerrada."
+
+);
+
+}catch(erro){
+
+console.error(erro);
+
+}
+
+}
+
+// ======================================================
+// CONFIGURAÇÃO
+// ======================================================
+
+async function carregarConfiguracoes(){
+
+const configuracao =
+
+await getDoc(
+
+doc(db,"configuracoes","eleicao")
+
+);
+
+if(!configuracao.exists()){
+
+return;
+
+}
+
+const dados =
+configuracao.data();
+
+statusVotacao.innerText =
+
+dados.aberta
+
+?
+
+"🟢 Aberta"
+
+:
+
+"🔴 Encerrada";
+
+document.getElementById(
+
+"situacaoVotacao"
+
+).innerText =
+
+statusVotacao.innerText;
+
+}
+
+// ======================================================
+// COMISSÃO
+// ======================================================
+
+async function carregarComissao(){
+
+const membros =
+await getDocs(
+
+collection(db,"comissao")
+
+);
+
+totalComissao.innerText =
+membros.size;
+
+}
+
+// ======================================================
+// HISTÓRICO
+// ======================================================
+
+async function adicionarHistorico(
+
+id,
+
+texto
+
+){
+
+const documento =
+
+await getDoc(
+
+doc(db,"inscricoes",id)
+
+);
+
+if(!documento.exists()){
+
+return;
+
+}
+
+const dados =
+documento.data();
+
+const historico =
+
+dados.historico || [];
+
+historico.push({
+
+descricao:texto,
+
+usuario:
+
+usuarioAtual ||
+
+"Comissão",
+
+dataHora:
+
+new Date()
+
+});
+
+await updateDoc(
+
+doc(db,"inscricoes",id),
+
+{
+
+historico
+
+}
+
+);
+
+}
+
