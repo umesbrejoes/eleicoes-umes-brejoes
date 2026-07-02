@@ -133,6 +133,14 @@ sair
 
 from "./auth.js";
 
+import {
+
+iniciarRealtime
+
+}
+
+from "./realtime.js";
+
 // ======================================================
 // INICIALIZAÇÃO
 // ======================================================
@@ -173,6 +181,8 @@ await carregarConfiguracoes();
 
 iniciarDashboardAutomatico();
 
+iniciarRealtime();
+
 registrarEventos();
 
 mostrarToast(
@@ -204,6 +214,284 @@ mostrarToast(
 }
 
 );
+
+// ======================================================
+// EVENTOS DO PAINEL
+// ======================================================
+
+function registrarEventos(){
+
+// ==========================================
+// PESQUISA DAS INSCRIÇÕES
+// ==========================================
+
+const pesquisa =
+document.getElementById("pesquisa");
+
+if(pesquisa){
+
+pesquisa.addEventListener(
+
+"input",
+
+(e)=>{
+
+pesquisarInscricoes(
+
+e.target.value
+
+);
+
+}
+
+);
+
+}
+
+// ==========================================
+// FILTROS
+// ==========================================
+
+document
+
+.querySelectorAll(".filtro")
+
+.forEach(botao=>{
+
+botao.addEventListener(
+
+"click",
+
+()=>{
+
+document
+
+.querySelectorAll(".filtro")
+
+.forEach(item=>{
+
+item.classList.remove("ativo");
+
+});
+
+botao.classList.add("ativo");
+
+filtrarStatus(
+
+botao.dataset.status
+
+);
+
+}
+
+);
+
+});
+
+// ==========================================
+// PAGINAÇÃO
+// ==========================================
+
+const btnAnterior =
+document.getElementById("paginaAnterior");
+
+if(btnAnterior){
+
+btnAnterior.addEventListener(
+
+"click",
+
+paginaAnterior
+
+);
+
+}
+
+const btnProxima =
+document.getElementById("proximaPagina");
+
+if(btnProxima){
+
+btnProxima.addEventListener(
+
+"click",
+
+proximaPagina
+
+);
+
+}
+
+// ==========================================
+// ATUALIZAR PAINEL
+// ==========================================
+
+const btnAtualizar =
+document.getElementById("btnAtualizar");
+
+if(btnAtualizar){
+
+btnAtualizar.addEventListener(
+
+"click",
+
+async()=>{
+
+await carregarDashboard();
+
+await carregarInscricoes();
+
+await carregarHomologacoes();
+
+await carregarComissao();
+
+await carregarVotacao();
+
+await carregarEleitores();
+
+await carregarResultados();
+
+await carregarAuditoria();
+
+await carregarLogs();
+
+await carregarLixeira();
+
+mostrarToast(
+
+"Sistema",
+
+"Painel atualizado com sucesso.",
+
+"sucesso"
+
+);
+
+}
+
+);
+
+}
+
+// ==========================================
+// ABRIR VOTAÇÃO
+// ==========================================
+
+const btnAbrir =
+document.getElementById("btnAbrirVotacao");
+
+if(btnAbrir){
+
+btnAbrir.addEventListener(
+
+"click",
+
+abrirVotacao
+
+);
+
+}
+
+// ==========================================
+// ENCERRAR VOTAÇÃO
+// ==========================================
+
+const btnEncerrar =
+document.getElementById("btnEncerrarVotacao");
+
+if(btnEncerrar){
+
+btnEncerrar.addEventListener(
+
+"click",
+
+encerrarVotacao
+
+);
+
+}
+
+// ==========================================
+// CONFIGURAÇÕES
+// ==========================================
+
+const btnSalvarConfiguracoes =
+document.getElementById("btnSalvarConfiguracoes");
+
+if(btnSalvarConfiguracoes){
+
+btnSalvarConfiguracoes.addEventListener(
+
+"click",
+
+salvarConfiguracoes
+
+);
+
+}
+
+const btnRestaurarConfiguracoes =
+document.getElementById("btnRestaurarConfiguracoes");
+
+if(btnRestaurarConfiguracoes){
+
+btnRestaurarConfiguracoes.addEventListener(
+
+"click",
+
+restaurarConfiguracoes
+
+);
+
+}
+
+// ==========================================
+// PESQUISA DE ELEITORES
+// ==========================================
+
+const pesquisaEleitor =
+document.getElementById("pesquisaEleitor");
+
+if(pesquisaEleitor){
+
+pesquisaEleitor.addEventListener(
+
+"input",
+
+(e)=>{
+
+pesquisarEleitor(
+
+e.target.value
+
+);
+
+}
+
+);
+
+}
+
+// ==========================================
+// BOTÃO SAIR
+// ==========================================
+
+const btnSair =
+document.getElementById("btnSair");
+
+if(btnSair){
+
+btnSair.addEventListener(
+
+"click",
+
+sair
+
+);
+
+}
+
+}
 
 // ======================================================
 // EVENTOS
