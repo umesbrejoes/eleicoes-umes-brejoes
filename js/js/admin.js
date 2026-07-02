@@ -204,3 +204,222 @@ mostrarToast(
 }
 
 );
+
+// ======================================================
+// EVENTOS
+// ======================================================
+
+function registrarEventos(){
+
+// ==========================================
+// PESQUISA DAS INSCRIÇÕES
+// ==========================================
+
+const pesquisa =
+document.getElementById("pesquisa");
+
+if(pesquisa){
+
+pesquisa.addEventListener(
+
+"input",
+
+(e)=>{
+
+pesquisarInscricoes(
+
+e.target.value
+
+);
+
+}
+
+);
+
+}
+
+// ==========================================
+// FILTROS
+// ==========================================
+
+document
+
+.querySelectorAll(".filtro")
+
+.forEach(botao=>{
+
+botao.addEventListener(
+
+"click",
+
+()=>{
+
+document
+
+.querySelectorAll(".filtro")
+
+.forEach(b=>{
+
+b.classList.remove("ativo");
+
+});
+
+botao.classList.add("ativo");
+
+filtrarStatus(
+
+botao.dataset.status
+
+);
+
+}
+
+);
+
+});
+
+// ==========================================
+// PAGINAÇÃO
+// ==========================================
+
+const anterior =
+document.getElementById("paginaAnterior");
+
+if(anterior){
+
+anterior.onclick=
+
+paginaAnterior;
+
+}
+
+const proxima =
+document.getElementById("proximaPagina");
+
+if(proxima){
+
+proxima.onclick=
+
+proximaPagina;
+
+}
+
+// ==========================================
+// VOTAÇÃO
+// ==========================================
+
+const abrir =
+document.getElementById("btnAbrirVotacao");
+
+if(abrir){
+
+abrir.onclick=
+
+abrirVotacao;
+
+}
+
+const encerrar =
+document.getElementById("btnEncerrarVotacao");
+
+if(encerrar){
+
+encerrar.onclick=
+
+encerrarVotacao;
+
+}
+
+// ==========================================
+// ATUALIZAR PAINEL
+// ==========================================
+
+const atualizar =
+document.getElementById("btnAtualizar");
+
+if(atualizar){
+
+atualizar.addEventListener(
+
+"click",
+
+async()=>{
+
+await carregarDashboard();
+
+await carregarInscricoes();
+
+await carregarHomologacoes();
+
+await carregarComissao();
+
+await carregarVotacao();
+
+await carregarEleitores();
+
+await carregarResultados();
+
+await carregarAuditoria();
+
+await carregarLogs();
+
+await carregarLixeira();
+
+mostrarToast(
+
+"Sistema",
+
+"Painel atualizado.",
+
+"sucesso"
+
+);
+
+}
+
+);
+
+}
+
+// ==========================================
+// CONFIGURAÇÕES
+// ==========================================
+
+const salvar =
+document.getElementById("btnSalvarConfiguracoes");
+
+if(salvar){
+
+salvar.onclick=
+
+salvarConfiguracoes;
+
+}
+
+const restaurar =
+document.getElementById("btnRestaurarConfiguracoes");
+
+if(restaurar){
+
+restaurar.onclick=
+
+restaurarConfiguracoes;
+
+}
+
+// ==========================================
+// LOGOUT
+// ==========================================
+
+const sairSistema =
+document.getElementById("btnSair");
+
+if(sairSistema){
+
+sairSistema.onclick=
+
+sair;
+
+}
+
+}
